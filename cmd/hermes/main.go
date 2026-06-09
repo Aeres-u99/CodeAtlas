@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"github.com/Aeres-u99/hermes/v2/internal"
 	"os"
-	"strings"
-	"time"
 )
 
 func main() {
@@ -20,37 +18,16 @@ func main() {
 	}
 	flag.StringVar(&inputFile, "input", "code.py", "Code to Parse")
 	flag.Parse()
-	content, err := os.ReadFile(inputFile)
+	result, err := internal.AnalyzeFile(inputFile)
 	if err != nil {
 		panic(err)
 	}
-	output := internal.Output{
-		Version:   1,
-		Generated: time.Now().UTC().Format(time.RFC3339),
-		Files:     make(map[string]internal.FileInfo),
-		Index:     make(map[string]internal.Location),
-	}
-	lang := internal.DetectLanguage(inputFile)
-	loc := len(strings.Split(string(content), "\n"))
-	output.Files[inputFile] = internal.FileInfo{
-		Lang:    lang,
-		LOC:     loc,
-		Imports: []string{},
-		Symbols: []internal.Symbol{},
-	}
-	imports := internal.ExtractImports(content, lang)
-	tags, err := internal.GetTags(inputFile)
-	if err != nil {
-		panic(err)
-	}
-	symbols, index := internal.BuildSymbols(tags, inputFile)
-	for k, v := range index {
-		output.Index[k] = v
-	}
-	fileInfo := output.Files[inputFile]
-	fileInfo.Symbols = symbols
-	fileInfo.Imports = imports
-	output.Files[inputFile] = fileInfo
+
+	output := internal.BuildOutput(
+		inputFile,
+		result,
+	)
+
 	data, err := json.MarshalIndent(output, "", " ")
 	if err != nil {
 		panic(err)

@@ -36,3 +36,8 @@ type CTag struct {
 	Scope     string `json:"scope,omitempty"`
 	ScopeKind string `json:"scopeKind,omitempty"`
 }
+
+type AnalysisResult struct {
+	FileInfo FileInfo
+	Index    map[string]Location
+}
