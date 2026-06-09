@@ -38,14 +38,25 @@ func AnalyzeFile(path string) (*FileAnalysis, error) {
 }
 
 func AnalyzeRepo(root string) (*AnalysisResult, error) {
+	ignore, err := LoadIgnoreFile(root)
+	if err != nil {
+		return nil, err
+	}
+
 	merged := &AnalysisResult{
 		Files: make(map[string]FileInfo),
 		Index: make(map[string]Location),
 	}
 
-	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+	err = filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
+		}
+		if ShouldIgnore(d.Name(), ignore) {
+			if d.IsDir() {
+				return filepath.SkipDir
+			}
+			return nil
 		}
 
 		if d.IsDir() {
@@ -85,3 +96,4 @@ func MergeFileAnalysis(path string, file *FileAnalysis, result *AnalysisResult) 
 		result.Index[k] = v
 	}
 }
+
