@@ -25,3 +25,14 @@ type Output struct {
 	Files     map[string]FileInfo `json:"files"`
 	Index     map[string]Location `json:"idx"`
 }
+
+type CTag struct {
+	Type      string `json:"_type"`
+	Name      string `json:"name"`
+	Path      string `json:"path"`
+	Pattern   string `json:"pattern"`
+	Line      int    `json:"line"`
+	Kind      string `json:"kind"`
+	Scope     string `json:"scope,omitempty"`
+	ScopeKind string `json:"scopeKind,omitempty"`
+}

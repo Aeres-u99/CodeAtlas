@@ -1,0 +1,231 @@
+{
+  "v": 1,
+  "generated": "2026-06-08T17:50:41Z",
+  "files": {
+    "sample/goru.go": {
+      "lang": "go",
+      "loc": 314,
+      "imports": [],
+      "symbols": [
+        {
+          "n": "main.Script.Description",
+          "t": "method",
+          "l": 32
+        },
+        {
+          "n": "main.Script.DisplayName",
+          "t": "method",
+          "l": 31
+        },
+        {
+          "n": "main.RunRequest.File",
+          "t": "method",
+          "l": 36
+        },
+        {
+          "n": "main.UploadResponse.File",
+          "t": "method",
+          "l": 21
+        },
+        {
+          "n": "main.Script.Name",
+          "t": "method",
+          "l": 30
+        },
+        {
+          "n": "main.OutputFile.Name",
+          "t": "method",
+          "l": 25
+        },
+        {
+          "n": "main.RunResponse.Output",
+          "t": "method",
+          "l": 41
+        },
+        {
+          "n": "main.OutputDir",
+          "t": "const",
+          "l": 16
+        },
+        {
+          "n": "main.OutputFile",
+          "t": "struct",
+          "l": 24
+        },
+        {
+          "n": "main.RunRequest",
+          "t": "struct",
+          "l": 35
+        },
+        {
+          "n": "main.RunResponse",
+          "t": "struct",
+          "l": 40
+        },
+        {
+          "n": "main.RunRequest.Script",
+          "t": "method",
+          "l": 37
+        },
+        {
+          "n": "main.Script",
+          "t": "struct",
+          "l": 29
+        },
+        {
+          "n": "main.ScriptDir",
+          "t": "const",
+          "l": 17
+        },
+        {
+          "n": "main.OutputFile.Size",
+          "t": "method",
+          "l": 26
+        },
+        {
+          "n": "main.UploadDir",
+          "t": "const",
+          "l": 15
+        },
+        {
+          "n": "main.UploadResponse",
+          "t": "struct",
+          "l": 20
+        },
+        {
+          "n": "main.deleteOutputHandler",
+          "t": "func",
+          "l": 44
+        },
+        {
+          "n": "main.main",
+          "t": "func",
+          "l": 288
+        },
+        {
+          "n": "main",
+          "t": "package",
+          "l": 1
+        },
+        {
+          "n": "main.outputsHandler",
+          "t": "func",
+          "l": 85
+        },
+        {
+          "n": "main.runHandler",
+          "t": "func",
+          "l": 206
+        },
+        {
+          "n": "main.scriptsHandler",
+          "t": "func",
+          "l": 122
+        },
+        {
+          "n": "main.uploadHandler",
+          "t": "func",
+          "l": 241
+        }
+      ]
+    }
+  },
+  "idx": {
+    "main": {
+      "f": "sample/goru.go",
+      "l": 1
+    },
+    "main.OutputDir": {
+      "f": "sample/goru.go",
+      "l": 16
+    },
+    "main.OutputFile": {
+      "f": "sample/goru.go",
+      "l": 24
+    },
+    "main.OutputFile.Name": {
+      "f": "sample/goru.go",
+      "l": 25
+    },
+    "main.OutputFile.Size": {
+      "f": "sample/goru.go",
+      "l": 26
+    },
+    "main.RunRequest": {
+      "f": "sample/goru.go",
+      "l": 35
+    },
+    "main.RunRequest.File": {
+      "f": "sample/goru.go",
+      "l": 36
+    },
+    "main.RunRequest.Script": {
+      "f": "sample/goru.go",
+      "l": 37
+    },
+    "main.RunResponse": {
+      "f": "sample/goru.go",
+      "l": 40
+    },
+    "main.RunResponse.Output": {
+      "f": "sample/goru.go",
+      "l": 41
+    },
+    "main.Script": {
+      "f": "sample/goru.go",
+      "l": 29
+    },
+    "main.Script.Description": {
+      "f": "sample/goru.go",
+      "l": 32
+    },
+    "main.Script.DisplayName": {
+      "f": "sample/goru.go",
+      "l": 31
+    },
+    "main.Script.Name": {
+      "f": "sample/goru.go",
+      "l": 30
+    },
+    "main.ScriptDir": {
+      "f": "sample/goru.go",
+      "l": 17
+    },
+    "main.UploadDir": {
+      "f": "sample/goru.go",
+      "l": 15
+    },
+    "main.UploadResponse": {
+      "f": "sample/goru.go",
+      "l": 20
+    },
+    "main.UploadResponse.File": {
+      "f": "sample/goru.go",
+      "l": 21
+    },
+    "main.deleteOutputHandler": {
+      "f": "sample/goru.go",
+      "l": 44
+    },
+    "main.main": {
+      "f": "sample/goru.go",
+      "l": 288
+    },
+    "main.outputsHandler": {
+      "f": "sample/goru.go",
+      "l": 85
+    },
+    "main.runHandler": {
+      "f": "sample/goru.go",
+      "l": 206
+    },
+    "main.scriptsHandler": {
+      "f": "sample/goru.go",
+      "l": 122
+    },
+    "main.uploadHandler": {
+      "f": "sample/goru.go",
+      "l": 241
+    }
+  }
+}
