@@ -29,6 +29,8 @@ func DetectLanguage(path string) string {
 		return "bazel"
 	case ".cc", ".cpp", ".cxx", ".h", ".hh", ".hpp", ".hxx":
 		return "cpp"
+	case ".tf", ".tfvars":
+		return "terraform"
 	case ".mk":
 		return "makefile"
 	case ".md", ".markdown":

@@ -2,10 +2,10 @@
 
 ## Project Goal
 
+**DISCLAIMER: PART OF THE ROADMAP IS AI GENERATED for the understanding of viability**
+
 Hermes is a lightweight semantic code mapper for AI-assisted development.
-
 The goal is not to perform static analysis, call graph generation, embeddings, or code intelligence.
-
 The goal is:
 
 ```text

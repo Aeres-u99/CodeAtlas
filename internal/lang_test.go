@@ -23,6 +23,8 @@ func TestDetectLanguage(t *testing.T) {
 		{path: "BUILD.bazel", want: "bazel"},
 		{path: "defs.bzl", want: "bazel"},
 		{path: "script.lua", want: "lua"},
+		{path: "main.tf", want: "terraform"},
+		{path: "terraform.tfvars", want: "terraform"},
 		{path: "notes.txt", want: "Unknown"},
 	}
 

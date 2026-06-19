@@ -17,7 +17,7 @@ Symbol
 ```
 
 Your job is to minimize repository exploration. Start from a symbol, retrieve the exact file and line, then read the code in place.
-
+DO NOT TRY TO KEEP ENTIRE hermes.json in the context window. OR DO NOT READ THE ENTIRE FILE either, Treat it like a map that you refer to when you need to find something
 The default workflow is:
 
 ```text

@@ -91,6 +91,32 @@ load("//tools:defs.bzl", "custom_rule")
 			want: []string{"//tools:defs.bzl", "@rules_go//go:def.bzl"},
 		},
 		{
+			name: "terraform",
+			lang: "terraform",
+			content: `module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "5.0.0"
+}
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.0"
+    }
+    random = {
+      source = "hashicorp/random"
+    }
+  }
+}
+
+module "local_mod" {
+  source = "./modules/my-module"
+}
+`,
+			want: []string{"./modules/my-module", "hashicorp/aws", "hashicorp/random", "terraform-aws-modules/vpc/aws"},
+		},
+		{
 			name: "makefile",
 			lang: "makefile",
 			content: `include common.mk

@@ -69,6 +69,9 @@ func ExtractImports(content []byte, lang string) []string {
 	if lang == "bazel" {
 		return uniqueSorted(extractBazelImports(content))
 	}
+	if lang == "terraform" {
+		return uniqueSorted(extractTerraformImports(content))
+	}
 
 	definition := GetLanguage(lang)
 	if definition == nil {
@@ -230,6 +233,44 @@ func extractBazelImports(content []byte) []string {
 		}
 
 		imports = append(imports, cleanStringLiteral(firstBazelLoadArg(line)))
+	}
+
+	return imports
+}
+
+func extractTerraformImports(content []byte) []string {
+	imports := []string{}
+
+	for _, line := range strings.Split(string(content), "\n") {
+		line = strings.TrimSpace(line)
+		if !strings.HasPrefix(line, "source") {
+			continue
+		}
+
+		rest := strings.TrimSpace(strings.TrimPrefix(line, "source"))
+		if !strings.HasPrefix(rest, "=") {
+			continue
+		}
+
+		rest = strings.TrimSpace(strings.TrimPrefix(rest, "="))
+		if len(rest) < 2 {
+			continue
+		}
+
+		quote := rest[0]
+		if quote != '"' && quote != '\'' {
+			continue
+		}
+
+		end := strings.IndexByte(rest[1:], quote)
+		if end < 0 {
+			continue
+		}
+
+		value := rest[1 : end+1]
+		if value != "" {
+			imports = append(imports, value)
+		}
 	}
 
 	return imports

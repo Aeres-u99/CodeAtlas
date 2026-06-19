@@ -1,6 +1,6 @@
 {
  "v": 1,
- "generated": "2026-06-19T18:27:17Z",
+ "generated": "2026-06-19T18:37:33Z",
  "files": {
   "Makefile": {
    "lang": "makefile",
@@ -60,6 +60,12 @@
   "fetcher.sh": {
    "lang": "Unknown",
    "loc": 13,
+   "imports": [],
+   "symbols": []
+  },
+  "hermes": {
+   "lang": "Unknown",
+   "loc": 94754,
    "imports": [],
    "symbols": []
   },
@@ -182,7 +188,7 @@
   },
   "internal/lang.go": {
    "lang": "go",
-   "loc": 42,
+   "loc": 44,
    "imports": [
     "path/filepath"
    ],
@@ -202,7 +208,7 @@
   },
   "internal/lang_test.go": {
    "lang": "go",
-   "loc": 37,
+   "loc": 39,
    "imports": [
     "testing"
    ],
@@ -242,7 +248,7 @@
   },
   "internal/parser.go": {
    "lang": "go",
-   "loc": 336,
+   "loc": 377,
    "imports": [
     "github.com/tree-sitter/go-tree-sitter",
     "github.com/tree-sitter/tree-sitter-c/bindings/go",
@@ -296,12 +302,12 @@
     {
      "n": "internal.cleanStringLiteral",
      "t": "func",
-     "l": 302
+     "l": 343
     },
     {
      "n": "internal.collectNodeText",
      "t": "func",
-     "l": 250
+     "l": 291
     },
     {
      "n": "cpp_ts",
@@ -311,52 +317,57 @@
     {
      "n": "internal.extractBazelImports",
      "t": "func",
-     "l": 217
+     "l": 220
     },
     {
      "n": "internal.extractCImports",
      "t": "func",
-     "l": 200
+     "l": 203
     },
     {
      "n": "internal.extractGoImports",
      "t": "func",
-     "l": 107
+     "l": 110
     },
     {
      "n": "internal.extractJavaImports",
      "t": "func",
-     "l": 178
+     "l": 181
     },
     {
      "n": "internal.extractJavaScriptImports",
      "t": "func",
-     "l": 127
+     "l": 130
     },
     {
      "n": "internal.extractPythonImports",
      "t": "func",
-     "l": 89
+     "l": 92
     },
     {
      "n": "internal.extractRustImports",
      "t": "func",
-     "l": 158
+     "l": 161
+    },
+    {
+     "n": "internal.extractTerraformImports",
+     "t": "func",
+     "l": 241
     },
     {
      "n": "internal.firstBazelLoadArg",
      "t": "func",
-     "l": 284
+     "l": 325
     },
     {
      "n": "internal.firstChild",
      "t": "func",
-     "l": 271
+     "l": 312
     },
     {
      "n": "internal.firstNodeText",
      "t": "func",
-     "l": 262
+     "l": 303
     },
     {
      "n": "go_ts",
@@ -401,18 +412,18 @@
     {
      "n": "internal.uniqueSorted",
      "t": "func",
-     "l": 319
+     "l": 360
     },
     {
      "n": "internal.walk",
      "t": "func",
-     "l": 238
+     "l": 279
     }
    ]
   },
   "internal/parser_test.go": {
    "lang": "go",
-   "loc": 128,
+   "loc": 154,
    "imports": [
     "reflect",
     "testing"
@@ -427,7 +438,7 @@
     {
      "n": "internal.TestGetLanguageUnknown",
      "t": "func",
-     "l": 123,
+     "l": 149,
      "p": true
     },
     {
@@ -1026,7 +1037,7 @@
   },
   "internal.TestGetLanguageUnknown": {
    "f": "internal/parser_test.go",
-   "l": 123
+   "l": 149
   },
   "internal.TestMergeIndexLocationKeepsDuplicateSymbols": {
    "f": "internal/symbols_test.go",
@@ -1034,51 +1045,55 @@
   },
   "internal.cleanStringLiteral": {
    "f": "internal/parser.go",
-   "l": 302
+   "l": 343
   },
   "internal.collectNodeText": {
    "f": "internal/parser.go",
-   "l": 250
+   "l": 291
   },
   "internal.extractBazelImports": {
    "f": "internal/parser.go",
-   "l": 217
+   "l": 220
   },
   "internal.extractCImports": {
    "f": "internal/parser.go",
-   "l": 200
+   "l": 203
   },
   "internal.extractGoImports": {
    "f": "internal/parser.go",
-   "l": 107
+   "l": 110
   },
   "internal.extractJavaImports": {
    "f": "internal/parser.go",
-   "l": 178
+   "l": 181
   },
   "internal.extractJavaScriptImports": {
    "f": "internal/parser.go",
-   "l": 127
+   "l": 130
   },
   "internal.extractPythonImports": {
    "f": "internal/parser.go",
-   "l": 89
+   "l": 92
   },
   "internal.extractRustImports": {
    "f": "internal/parser.go",
-   "l": 158
+   "l": 161
+  },
+  "internal.extractTerraformImports": {
+   "f": "internal/parser.go",
+   "l": 241
   },
   "internal.firstBazelLoadArg": {
    "f": "internal/parser.go",
-   "l": 284
+   "l": 325
   },
   "internal.firstChild": {
    "f": "internal/parser.go",
-   "l": 271
+   "l": 312
   },
   "internal.firstNodeText": {
    "f": "internal/parser.go",
-   "l": 262
+   "l": 303
   },
   "internal.qualifiedIndexName": {
    "f": "internal/symbols.go",
@@ -1090,11 +1105,11 @@
   },
   "internal.uniqueSorted": {
    "f": "internal/parser.go",
-   "l": 319
+   "l": 360
   },
   "internal.walk": {
    "f": "internal/parser.go",
-   "l": 238
+   "l": 279
   },
   "internal/consts.go#internal": {
    "f": "internal/consts.go",
