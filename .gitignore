@@ -1,5 +1,7 @@
-*.pew
+*pew
 hermes
 dist/
 *.json
 !hermes.json
+hermes-linux-*
+hermes-darwin-*
