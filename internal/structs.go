@@ -1,10 +1,11 @@
 package internal
 
 type Symbol struct {
-	Name string `json:"n"`
-	Type string `json:"t"`
-	Line int    `json:"l"`
-	Sig  string `json:"sig,omitempty"`
+	Name   string `json:"n"`
+	Type   string `json:"t"`
+	Line   int    `json:"l"`
+	Public bool   `json:"p,omitempty"`
+	Sig    string `json:"sig,omitempty"`
 }
 
 type FileInfo struct {
@@ -33,6 +34,7 @@ type CTag struct {
 	Pattern   string `json:"pattern"`
 	Line      int    `json:"line"`
 	Kind      string `json:"kind"`
+	Access    string `json:"access,omitempty"`
 	Scope     string `json:"scope,omitempty"`
 	ScopeKind string `json:"scopeKind,omitempty"`
 }

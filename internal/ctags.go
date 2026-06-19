@@ -11,7 +11,7 @@ func GetTags(path string) ([]CTag, error) {
 	cmd := exec.Command(
 		"ctags",
 		"--output-format=json",
-		"--fields=+n",
+		"--fields=+na",
 		path,
 	)
 

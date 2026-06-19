@@ -23,7 +23,7 @@ func AnalyzeFile(path string) (*FileAnalysis, error) {
 		return nil, err
 	}
 
-	symbols, index := BuildSymbols(tags, path)
+	symbols, index := BuildSymbols(tags, path, lang)
 
 	fileInfo := FileInfo{
 		Lang:    lang,
@@ -102,6 +102,6 @@ func MergeFileAnalysis(
 	result.Files[path] = file.FileInfo
 
 	for k, v := range file.Index {
-		result.Index[k] = v
+		MergeIndexLocation(result.Index, k, v)
 	}
 }
