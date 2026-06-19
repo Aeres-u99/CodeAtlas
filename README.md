@@ -8,6 +8,13 @@
 
 **A deterministic code indexing and retrieval system for AI-assisted development.**
 
+
+In Greek mythology, Hermes was the messenger of the gods, known for speed, travel, and delivering information between distant places, Most importantly he was the guide of travelers, the messenger of the gods, and the navigator between worlds.
+Hermes follows the same philosophy for codebases.
+It does not attempt to replace understanding.
+Instead, it guides developers and AI agents through large repositories, helping them navigate directly to the symbols, files, and implementations they need.
+The repository already contains the answer.
+
 Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can find the right code—fast. Instead of exploring millions of tokens, ask Hermes and jump directly to what matters.
 
 
@@ -549,8 +556,6 @@ Done.
 * [ ] Incremental indexing
 * [ ] Multi-language support
 * [ ] Cross-reference graph
-  
-  
 
 ---
 
