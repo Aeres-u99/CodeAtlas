@@ -10,11 +10,12 @@
 
 Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can find the right code—fast. Instead of exploring millions of tokens, ask Hermes and jump directly to what matters.
 
-<p align = "center">
-![Status](https://img.shields.io/badge/status-stable-brightgreen)  
-![License](https://img.shields.io/badge/license-MIT-blue)  
-![Built With](https://img.shields.io/badge/built%20with-Go-00ADD8)  
-![Tree-sitter](https://img.shields.io/badge/parser-Tree--sitter-green)
+
+<p align="center">
+  <img src="https://img.shields.io/badge/status-stable-brightgreen" />
+  <img src="https://img.shields.io/badge/license-MIT-blue" />
+  <img src="https://img.shields.io/badge/built%20with-Go-00ADD8" />
+  <img src="https://img.shields.io/badge/parser-Tree--sitter-green" />
 </p>
 
 </div>
