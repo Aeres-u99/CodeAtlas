@@ -9,3 +9,6 @@ go.sum
 .hermesignore
 *.md
 *.json
+assets/**
+.gitignore
+.hermes/**

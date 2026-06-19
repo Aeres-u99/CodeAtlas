@@ -1,13 +1,7 @@
 {
  "v": 1,
- "generated": "2026-06-19T17:35:08Z",
+ "generated": "2026-06-19T18:27:17Z",
  "files": {
-  ".gitignore": {
-   "lang": "Unknown",
-   "loc": 5,
-   "imports": [],
-   "symbols": []
-  },
   "Makefile": {
    "lang": "makefile",
    "loc": 12,
