@@ -21,6 +21,40 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
 </div>
 
 ---
+## 📚 Table of Contents
+
+* [✨ Key Benefits](#-key-benefits)
+* [📖 What is Hermes?](#-what-is-hermes)
+* [⚙️ How It Works](#️-how-it-works)
+
+  * [1️⃣ Index Generation](#1️⃣-index-generation)
+  * [2️⃣ Query](#2️⃣-query)
+  * [3️⃣ Navigate](#3️⃣-navigate)
+  * [📦 .hermesignore](#-hermesignore)
+* [🚀 Why Hermes Matters](#-why-hermes-matters)
+* [🛠️ Installation](#installation)
+* [📊 Benchmarks](#-benchmarks)
+
+  * [Cross-Repository Summary](#cross-repository-summary)
+  * [Detailed Reports](#detailed-reports)
+  * [Retrieval Reduction](#retrieval-reduction)
+* [🔎 First Lookup Accuracy](#-first-lookup-accuracy)
+* [📦 When To Use Hermes](#-when-to-use-hermes)
+* [🔄 Index Once. Query Many.](#-index-once-query-many)
+* [🏗 Architecture](#-architecture)
+* [🧭 Design Principles](#-design-principles)
+
+  * [Retrieval Over Stuffing](#retrieval-over-stuffing)
+  * [Deterministic](#deterministic)
+  * [Transparent](#transparent)
+  * [Tool Friendly](#tool-friendly)
+  * [Language Aware](#language-aware)
+* [⚡ Quick Start](#-quick-start)
+* [🛣 Roadmap](#-roadmap)
+* [🤝 Contributing](#-contributing)
+* [📄 License](#-license)
+
+---
 
 # ✨ Key Benefits
 
@@ -168,6 +202,7 @@ Hermes is designed around the principle that not all repository content is equal
 > **Tip:** For large repositories such as Kubernetes, Loki, or Terraform, excluding `.git/**`, vendored dependencies, generated files, and documentation can dramatically reduce index size while preserving the vast majority of implementation-relevant symbols.
 
 ---
+
 # 🚀 Why Hermes Matters
 
 Modern LLM workflows spend the majority of their time and tokens exploring repositories.
@@ -209,6 +244,16 @@ Benefits:
 
 ---
 
+# Installation
+
+```
+git clone https://github.com/Aeres-u99/hermes.git
+make
+sudo install hermes /usr/bin/local
+# Or move it anywhere in the PATH to invoke
+```
+
+---
 # 📊 Benchmarks
 
 Hermes has been benchmarked against three real-world repositories of different scales.
