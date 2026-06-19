@@ -1,4 +1,5 @@
 *.pew
 hermes
+dist/
 *.json
 !hermes.json

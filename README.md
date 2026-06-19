@@ -40,6 +40,9 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
   * [📦 .hermesignore](#-hermesignore)
 * [🚀 Why Hermes Matters](#-why-hermes-matters)
 * [🛠️ Installation](#installation)
+
+  * [Running Tests](#running-tests)
+  * [Cross-Platform Builds](#cross-platform-builds)
 * [📊 Benchmarks](#-benchmarks)
 
   * [Cross-Repository Summary](#cross-repository-summary)
@@ -142,7 +145,7 @@ grep -C3 "ConfigureProvider" hermes.json
 or
 
 ```bash
-jq '.symbols[] | select(.name=="ConfigureProvider")' hermes.json
+jq '.idx["ConfigureProvider"]' hermes.json
 ```
 
 ---
@@ -306,6 +309,93 @@ make
 
 ---
 
+## Running Tests
+
+```bash
+make test
+```
+
+---
+
+## Cross-Platform Builds
+
+Hermes uses CGo (via Tree-sitter), so cross-compilation requires a C cross-compiler for the target architecture — `GOARCH` alone is not enough.
+
+### Linux arm64 (from Linux amd64)
+
+Install the cross-compiler:
+
+#### Ubuntu / Debian
+
+```bash
+sudo apt install gcc-aarch64-linux-gnu
+```
+
+#### Arch Linux
+
+```bash
+sudo pacman -S aarch64-linux-gnu-gcc
+```
+
+Build:
+
+```bash
+make build-linux-arm64
+```
+
+Output: `dist/hermes-linux-arm64`
+
+Transfer the binary to your ARM machine and install:
+
+```bash
+scp dist/hermes-linux-arm64 user@arm-host:~
+ssh user@arm-host 'sudo install ~/hermes-linux-arm64 /usr/local/bin/hermes'
+```
+
+---
+
+### Linux amd64
+
+```bash
+make build-linux-amd64
+```
+
+Output: `dist/hermes-linux-amd64`
+
+---
+
+### macOS (run natively on the target Mac)
+
+Darwin cross-compilation from Linux requires the macOS SDK and is not supported here. Run these on the Mac itself.
+
+#### Apple Silicon (arm64)
+
+```bash
+make build-darwin-arm64
+```
+
+Output: `dist/hermes-darwin-arm64`
+
+#### Intel (amd64)
+
+```bash
+make build-darwin-amd64
+```
+
+Output: `dist/hermes-darwin-amd64`
+
+---
+
+### Build all Linux targets at once
+
+```bash
+make build-all
+```
+
+Produces both `dist/hermes-linux-amd64` and `dist/hermes-linux-arm64`.
+
+---
+
 ## Install Hermes
 
 ```bash
@@ -323,7 +413,7 @@ hermes --help
 ## Generate Your First Index
 
 ```bash
-hermes -input .
+hermes -input . > hermes.json
 ```
 
 This generates:
@@ -542,7 +632,7 @@ grep -C3 "MyFunction" hermes.json
 Retrieve with jq:
 
 ```bash
-jq '.symbols[] | select(.name=="MyFunction")' hermes.json
+jq '.idx["MyFunction"]' hermes.json
 ```
 
 Open the returned file and line.

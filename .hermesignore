@@ -1,4 +1,5 @@
 .git/
+dist/**
 sample/**
 sample/goru.go
 sample/code.py
