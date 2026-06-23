@@ -10,16 +10,18 @@ import (
 
 func main() {
 	var inputFile string
+	var outputFile string
 
 	flag.Usage = func() {
 		w := flag.CommandLine.Output()
 		fmt.Fprintf(w, "%s - The Code Map you will Ever need!\n", os.Args[0])
-		fmt.Fprintf(w, "For custom CTAGS path use Environment Variable HERMES_CTAGS for custom path")
+		fmt.Fprintf(w, "For custom CTAGS path use Environment Variable HERMES_CTAGS for custom path\n")
 		flag.PrintDefaults()
 		fmt.Fprintf(w, "Have Fun!")
 	}
 
 	flag.StringVar(&inputFile, "input", "code.py", "Code to Parse")
+	flag.StringVar(&outputFile, "output", "hermes.json", "Code to Parse")
 	flag.Parse()
 
 	var result *internal.AnalysisResult
@@ -51,5 +53,6 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Println(string(data))
+	err = os.WriteFile(outputFile, data, 0644)
+	fmt.Printf("Wrote to file: %s", outputFile)
 }

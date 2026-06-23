@@ -1,6 +1,6 @@
-Found Custom CTAGS: /home/kei/bin/uctags{
+{
  "v": 1,
- "generated": "2026-06-23T16:48:18Z",
+ "generated": "2026-06-23T17:04:34Z",
  "files": {
   ".github/workflows/release.yml": {
    "lang": "Unknown",
@@ -83,7 +83,7 @@ Found Custom CTAGS: /home/kei/bin/uctags{
   },
   "cmd/hermes/main.go": {
    "lang": "go",
-   "loc": 56,
+   "loc": 59,
    "imports": [
     "encoding/json",
     "flag",
@@ -112,7 +112,7 @@ Found Custom CTAGS: /home/kei/bin/uctags{
   },
   "hermes": {
    "lang": "Unknown",
-   "loc": 94554,
+   "loc": 94712,
    "imports": [],
    "symbols": []
   },
