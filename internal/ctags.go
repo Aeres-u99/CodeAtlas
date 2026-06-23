@@ -11,15 +11,16 @@ import (
 
 func GetCtagsPath() string {
 	if v, ok := os.LookupEnv("HERMES_CTAGS"); ok {
-		fmt.Printf("Found Custom CTAGS: %s", v)
+		fmt.Printf("Found Custom CTAGS: %s\n", v)
 		return v
 	} else {
 		return "ctags"
 	}
 }
 
+var cmdBin = GetCtagsPath()
+
 func GetTags(path string) ([]CTag, error) {
-	cmdBin := GetCtagsPath()
 	cmd := exec.Command(
 		cmdBin,
 		"--output-format=json",
