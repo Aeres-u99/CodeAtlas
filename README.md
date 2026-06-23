@@ -123,7 +123,7 @@ Hermes parses the repository using Tree-sitter and extracts:
 * File Locations
 
 ```bash
-hermes -input . > hermes.json
+hermes -input .
 ```
 
 Output:
@@ -413,7 +413,7 @@ hermes --help
 ## Generate Your First Index
 
 ```bash
-hermes -input . > hermes.json
+hermes -input .
 ```
 
 This generates:
@@ -617,10 +617,23 @@ Designed to understand source structure rather than plain text.
 
 # ⚡ Quick Start
 
+Hermes Help
+```
+❯ hermes --help
+hermes - The Code Map you will Ever need!
+For custom CTAGS path use Environment Variable HERMES_CTAGS for custom path
+  -input string
+    	Code to Parse (default "code.py")
+  -output string
+    	Code to Parse (default "hermes.json")
+Have Fun
+
+```
+
 Generate an index:
 
 ```bash
-hermes -input . > hermes.json
+hermes -input .
 ```
 
 Search for a symbol:
