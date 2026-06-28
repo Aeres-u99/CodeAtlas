@@ -33,18 +33,15 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
 * [✨ Key Benefits](#-key-benefits)
 * [📖 What is Hermes?](#-what-is-hermes)
 * [⚙️ How It Works](#️-how-it-works)
-
   * [1️⃣ Index Generation](#1️⃣-index-generation)
   * [2️⃣ Query](#2️⃣-query)
   * [3️⃣ Navigate](#3️⃣-navigate)
   * [📦 .hermesignore](#-hermesignore)
 * [🚀 Why Hermes Matters](#-why-hermes-matters)
 * [🛠️ Installation](#installation)
-
   * [Running Tests](#running-tests)
   * [Cross-Platform Builds](#cross-platform-builds)
 * [📊 Benchmarks](#-benchmarks)
-
   * [Cross-Repository Summary](#cross-repository-summary)
   * [Detailed Reports](#detailed-reports)
   * [Retrieval Reduction](#retrieval-reduction)
@@ -53,7 +50,6 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
 * [🔄 Index Once. Query Many.](#-index-once-query-many)
 * [🏗 Architecture](#-architecture)
 * [🧭 Design Principles](#-design-principles)
-
   * [Retrieval Over Stuffing](#retrieval-over-stuffing)
   * [Deterministic](#deterministic)
   * [Transparent](#transparent)
