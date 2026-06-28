@@ -294,6 +294,21 @@ Expected output should contain:
 ```text
 Universal Ctags
 ```
+#### Linux / macOS
+
+Install the latest release:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Aeres-u99/hermes/main/install.sh | bash
+```
+
+If `~/.local/bin` is not on your `PATH`, the installer will tell you how to add it.
+
+Verify the installation:
+
+```bash
+hermes --help
+```
 
 ---
 
