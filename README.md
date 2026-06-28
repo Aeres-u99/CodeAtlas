@@ -30,6 +30,7 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
 ---
 ## 📚 Table of Contents
 
+* [🛠️ Installation](#-installation)
 * [✨ Key Benefits](#-key-benefits)
 * [📖 What is Hermes?](#-what-is-hermes)
 * [⚙️ How It Works](#️-how-it-works)
@@ -38,7 +39,6 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
   * [3️⃣ Navigate](#3️⃣-navigate)
   * [📦 .hermesignore](#-hermesignore)
 * [🚀 Why Hermes Matters](#-why-hermes-matters)
-* [🛠️ Installation](#-installation)
   * [Running Tests](#running-tests)
   * [Cross-Platform Builds](#cross-platform-builds)
 * [📊 Benchmarks](#-benchmarks)
@@ -59,194 +59,6 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
 * [🛣 Roadmap](#-roadmap)
 * [🤝 Contributing](#-contributing)
 * [📄 License](#-license)
-
----
-
-# ✨ Key Benefits
-
-| 🎯 Direct Navigation                                                    | ⚡ High Efficiency                                                | 💰 Lower Cost                                    | 🔍 Works at Scale                           |
-| ----------------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------- |
-| Jump directly to implementations without exploring the repository tree. | Reduce repository exploration through targeted symbol retrieval. | Fewer searches, fewer tool calls, lower latency. | Designed for medium and large repositories. |
-
----
-
-# 📖 What is Hermes?
-
-Hermes is a repository indexing and retrieval system that produces a structured symbol index (`hermes.json`) of your codebase.
-
-You can then query this index using simple tools such as:
-
-* grep
-* jq
-* ripgrep
-* Claude Code
-* Aider
-* Custom agents
-
-Instead of feeding your entire repository to an LLM, Hermes retrieves only the relevant functions, types, files, and locations.
-
-```text
-Repository
-    │
-    ▼
- Hermes Index
-    │
-    ▼
- grep / jq / rg
-    │
-    ▼
- Relevant Symbols
-    │
-    ▼
-      LLM
-```
-
----
-
-# ⚙️ How It Works
-
-### 1️⃣ Index Generation
-
-Hermes parses the repository using Tree-sitter and extracts:
-
-* Functions
-* Methods
-* Structs
-* Interfaces
-* Constants
-* Variables
-* Imports
-* File Locations
-
-```bash
-hermes -input .
-```
-
-Output:
-
-```text
-hermes.json
-```
-
----
-
-### 2️⃣ Query
-
-Search for symbols using standard UNIX tools.
-
-```bash
-grep -C3 "ConfigureProvider" hermes.json
-```
-
-or
-
-```bash
-jq '.idx["ConfigureProvider"]' hermes.json
-```
-
----
-
-### 3️⃣ Navigate
-
-Open the exact files and locations returned by Hermes.
-
-No blind repository exploration required.
-
----
-
-#### 📦 .hermesignore
-
-Hermes supports a `.hermesignore` file to exclude files and directories that provide little or no value for code navigation.
-
-Ignoring generated code, vendored dependencies, documentation, test fixtures, repository metadata, and build artifacts can significantly reduce index size, indexing time, and query noise.
-
-A well-tuned `.hermesignore` helps Hermes focus on implementation code rather than auxiliary repository content.
-
-### Example
-
-```gitignore
-# Repository metadata
-.git/**
-.github/**
-
-# Dependencies
-vendor/
-node_modules/
-
-# Documentation
-docs/
-*.md
-
-# Generated files
-**/zz_generated.*
-**/*_generated.go
-
-# Test fixtures
-**/testdata/
-**/*_test.go
-
-# Build artifacts
-dist/
-build/
-tmp/
-
-# IDE files
-.idea/
-.vscode/
-```
-
-### Why Use `.hermesignore`?
-
-- ⚡ Faster indexing
-- 📉 Smaller index size
-- 🎯 Better retrieval precision
-- 💰 Lower token consumption
-- 🔍 Reduced search noise
-
-Hermes is designed around the principle that not all repository content is equally valuable for navigation. A carefully curated `.hermesignore` allows the index to focus on the code that matters most.
-
-> **Tip:** For large repositories such as Kubernetes, Loki, or Terraform, excluding `.git/**`, vendored dependencies, generated files, and documentation can dramatically reduce index size while preserving the vast majority of implementation-relevant symbols.
-
----
-
-# 🚀 Why Hermes Matters
-
-Modern LLM workflows spend the majority of their time and tokens exploring repositories.
-
-Typical workflow:
-
-```text
-Search
- ↓
-Open File
- ↓
-Wrong File
- ↓
-Search Again
- ↓
-Open More Files
- ↓
-Find Implementation
-```
-
-Hermes transforms that into:
-
-```text
-Lookup Symbol
- ↓
-Open Correct File
- ↓
-Done
-```
-
-Benefits:
-
-* Fewer file reads
-* Lower token usage
-* Fewer tool calls
-* Faster navigation
-* Lower latency
-* Better agent performance
 
 ---
 
@@ -449,6 +261,192 @@ hermes --help
 ```
 
 ---
+
+# ✨ Key Benefits
+
+| 🎯 Direct Navigation                                                    | ⚡ High Efficiency                                                | 💰 Lower Cost                                    | 🔍 Works at Scale                           |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------- |
+| Jump directly to implementations without exploring the repository tree. | Reduce repository exploration through targeted symbol retrieval. | Fewer searches, fewer tool calls, lower latency. | Designed for medium and large repositories. |
+
+---
+
+# 📖 What is Hermes?
+
+Hermes is a repository indexing and retrieval system that produces a structured symbol index (`hermes.json`) of your codebase.
+
+You can then query this index using simple tools such as:
+
+* grep
+* jq
+* ripgrep
+* Claude Code
+* Aider
+* Custom agents
+
+Instead of feeding your entire repository to an LLM, Hermes retrieves only the relevant functions, types, files, and locations.
+
+```text
+Repository
+    │
+    ▼
+ Hermes Index
+    │
+    ▼
+ grep / jq / rg
+    │
+    ▼
+ Relevant Symbols
+    │
+    ▼
+      LLM
+```
+
+---
+
+# ⚙️ How It Works
+
+### 1️⃣ Index Generation
+
+Hermes parses the repository using Tree-sitter and extracts:
+
+* Functions
+* Methods
+* Structs
+* Interfaces
+* Constants
+* Variables
+* Imports
+* File Locations
+
+```bash
+hermes -input .
+```
+
+Output:
+
+```text
+hermes.json
+```
+
+---
+
+### 2️⃣ Query
+
+Search for symbols using standard UNIX tools.
+
+```bash
+grep -C3 "ConfigureProvider" hermes.json
+```
+
+or
+
+```bash
+jq '.idx["ConfigureProvider"]' hermes.json
+```
+
+---
+
+### 3️⃣ Navigate
+
+Open the exact files and locations returned by Hermes.
+
+No blind repository exploration required.
+
+---
+
+#### 📦 .hermesignore
+
+Hermes supports a `.hermesignore` file to exclude files and directories that provide little or no value for code navigation.
+
+Ignoring generated code, vendored dependencies, documentation, test fixtures, repository metadata, and build artifacts can significantly reduce index size, indexing time, and query noise.
+
+A well-tuned `.hermesignore` helps Hermes focus on implementation code rather than auxiliary repository content.
+
+### Example
+
+```gitignore
+# Repository metadata
+.git/**
+.github/**
+
+# Dependencies
+vendor/
+node_modules/
+
+# Documentation
+docs/
+*.md
+
+# Generated files
+**/zz_generated.*
+**/*_generated.go
+
+# Test fixtures
+**/testdata/
+**/*_test.go
+
+# Build artifacts
+dist/
+build/
+tmp/
+
+# IDE files
+.idea/
+.vscode/
+```
+
+### Why Use `.hermesignore`?
+
+- ⚡ Faster indexing
+- 📉 Smaller index size
+- 🎯 Better retrieval precision
+- 💰 Lower token consumption
+- 🔍 Reduced search noise
+
+Hermes is designed around the principle that not all repository content is equally valuable for navigation. A carefully curated `.hermesignore` allows the index to focus on the code that matters most.
+
+> **Tip:** For large repositories such as Kubernetes, Loki, or Terraform, excluding `.git/**`, vendored dependencies, generated files, and documentation can dramatically reduce index size while preserving the vast majority of implementation-relevant symbols.
+
+---
+
+# 🚀 Why Hermes Matters
+
+Modern LLM workflows spend the majority of their time and tokens exploring repositories.
+
+Typical workflow:
+
+```text
+Search
+ ↓
+Open File
+ ↓
+Wrong File
+ ↓
+Search Again
+ ↓
+Open More Files
+ ↓
+Find Implementation
+```
+
+Hermes transforms that into:
+
+```text
+Lookup Symbol
+ ↓
+Open Correct File
+ ↓
+Done
+```
+
+Benefits:
+
+* Fewer file reads
+* Lower token usage
+* Fewer tool calls
+* Faster navigation
+* Lower latency
+* Better agent performance
 
 ## Generate Your First Index
 
