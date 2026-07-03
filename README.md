@@ -62,14 +62,16 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
 
 ---
 
-# 🛠️ Installation
+# Installation
 
 ## Prerequisites
 
 Hermes requires:
 
 - Go 1.24+
-- Universal Ctags
+- Universal Ctags https://github.com/universal-ctags/ctags?tab=GPL-2.0-1-ov-file (GPL 2.0)
+- jq
+- ripgrep / grep (optional)
 
 ### Install Universal Ctags
 
@@ -107,7 +109,7 @@ Universal Ctags
 Install the latest release:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Aeres-u99/hermes/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Aeres-u99/hermes/master/install.sh | bash
 ```
 
 If `~/.local/bin` is not on your `PATH`, the installer will tell you how to add it.
@@ -145,7 +147,7 @@ hermes --help
 Run the installer again or Download manually and install:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Aeres-u99/hermes/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Aeres-u99/hermes/master/install.sh | bash
 ```
 
 ---
