@@ -1,6 +1,6 @@
 {
  "v": 1,
- "generated": "2026-06-23T17:04:34Z",
+ "generated": "2026-07-03T15:54:32Z",
  "files": {
   ".github/workflows/release.yml": {
    "lang": "Unknown",
@@ -83,19 +83,20 @@
   },
   "cmd/hermes/main.go": {
    "lang": "go",
-   "loc": 59,
+   "loc": 81,
    "imports": [
     "encoding/json",
     "flag",
     "fmt",
     "github.com/Aeres-u99/hermes/v2/internal",
+    "log/slog",
     "os"
    ],
    "symbols": [
     {
      "n": "main.main",
      "t": "func",
-     "l": 11
+     "l": 12
     },
     {
      "n": "main",
@@ -104,24 +105,25 @@
     }
    ]
   },
-  "fetcher.sh": {
+  "hermes": {
    "lang": "Unknown",
-   "loc": 13,
+   "loc": 96004,
    "imports": [],
    "symbols": []
   },
-  "hermes": {
+  "install.sh": {
    "lang": "Unknown",
-   "loc": 94712,
+   "loc": 102,
    "imports": [],
    "symbols": []
   },
   "internal/analyzer.go": {
    "lang": "go",
-   "loc": 116,
+   "loc": 123,
    "imports": [
     "fmt",
     "github.com/monochromegane/go-gitignore",
+    "log/slog",
     "os",
     "path/filepath",
     "strings"
@@ -130,31 +132,31 @@
     {
      "n": "internal.AnalyzeFile",
      "t": "func",
-     "l": 12,
+     "l": 13,
      "p": true
     },
     {
      "n": "internal.AnalyzeRepo",
      "t": "func",
-     "l": 42,
+     "l": 46,
      "p": true
     },
     {
      "n": "internal.IsDir",
      "t": "func",
-     "l": 96,
+     "l": 102,
      "p": true
     },
     {
      "n": "internal.MergeFileAnalysis",
      "t": "func",
-     "l": 105,
+     "l": 112,
      "p": true
     },
     {
      "n": "gitignore",
      "t": "packageName",
-     "l": 9
+     "l": 10
     },
     {
      "n": "internal",
@@ -165,7 +167,7 @@
   },
   "internal/consts.go": {
    "lang": "go",
-   "loc": 12,
+   "loc": 107,
    "imports": [],
    "symbols": [
     {
@@ -184,6 +186,12 @@
      "n": "internal.Call.Caller",
      "t": "method",
      "l": 4,
+     "p": true
+    },
+    {
+     "n": "internal.DefaultHermesIgnore",
+     "t": "const",
+     "l": 13,
      "p": true
     },
     {
@@ -217,7 +225,7 @@
    "imports": [
     "bytes",
     "encoding/json",
-    "fmt",
+    "log/slog",
     "os",
     "os/exec",
     "strings"
@@ -249,15 +257,16 @@
   },
   "internal/lang.go": {
    "lang": "go",
-   "loc": 44,
+   "loc": 48,
    "imports": [
+    "log/slog",
     "path/filepath"
    ],
    "symbols": [
     {
      "n": "internal.DetectLanguage",
      "t": "func",
-     "l": 5,
+     "l": 8,
      "p": true
     },
     {
@@ -278,6 +287,30 @@
      "n": "internal.TestDetectLanguage",
      "t": "func",
      "l": 5,
+     "p": true
+    },
+    {
+     "n": "internal",
+     "t": "package",
+     "l": 1
+    }
+   ]
+  },
+  "internal/logger.go": {
+   "lang": "go",
+   "loc": 58,
+   "imports": [
+    "fmt",
+    "log/slog",
+    "os",
+    "path/filepath",
+    "strings"
+   ],
+   "symbols": [
+    {
+     "n": "internal.InitLogger",
+     "t": "func",
+     "l": 11,
      "p": true
     },
     {
@@ -866,7 +899,7 @@
   },
   "gitignore": {
    "f": "internal/analyzer.go",
-   "l": 9
+   "l": 10
   },
   "go_ts": {
    "f": "internal/parser.go",
@@ -894,11 +927,11 @@
   },
   "internal.AnalyzeFile": {
    "f": "internal/analyzer.go",
-   "l": 12
+   "l": 13
   },
   "internal.AnalyzeRepo": {
    "f": "internal/analyzer.go",
-   "l": 42
+   "l": 46
   },
   "internal.BuildOutput": {
    "f": "internal/output.go",
@@ -960,6 +993,10 @@
    "f": "internal/consts.go",
    "l": 4
   },
+  "internal.DefaultHermesIgnore": {
+   "f": "internal/consts.go",
+   "l": 13
+  },
   "internal.Dependency": {
    "f": "internal/consts.go",
    "l": 8
@@ -974,7 +1011,7 @@
   },
   "internal.DetectLanguage": {
    "f": "internal/lang.go",
-   "l": 5
+   "l": 8
   },
   "internal.ExtractImports": {
    "f": "internal/parser.go",
@@ -1024,9 +1061,13 @@
    "f": "internal/ctags.go",
    "l": 23
   },
+  "internal.InitLogger": {
+   "f": "internal/logger.go",
+   "l": 11
+  },
   "internal.IsDir": {
    "f": "internal/analyzer.go",
-   "l": 96
+   "l": 102
   },
   "internal.IsPublicSymbol": {
    "f": "internal/symbols.go",
@@ -1062,7 +1103,7 @@
   },
   "internal.MergeFileAnalysis": {
    "f": "internal/analyzer.go",
-   "l": 105
+   "l": 112
   },
   "internal.MergeIndexLocation": {
    "f": "internal/symbols.go",
@@ -1220,6 +1261,10 @@
    "f": "internal/lang_test.go",
    "l": 1
   },
+  "internal/logger.go#internal": {
+   "f": "internal/logger.go",
+   "l": 1
+  },
   "internal/output.go#internal": {
    "f": "internal/output.go",
    "l": 1
@@ -1258,7 +1303,7 @@
   },
   "main.main": {
    "f": "cmd/hermes/main.go",
-   "l": 11
+   "l": 12
   },
   "py_ts": {
    "f": "internal/parser.go",

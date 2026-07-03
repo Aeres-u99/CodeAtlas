@@ -64,6 +64,41 @@ echo
 echo "Installed to:"
 echo "    $INSTALL_DIR/$BINARY"
 
+mkdir -p "$HOME/.hermes/skills"
+
+if ! command -v jq >/dev/null 2>&1; then
+    echo "Error: jq is required to install Hermes skills."
+    exit 1
+fi
+
+curl -fsSL "https://api.github.com/repos/Aeres-u99/hermes/contents/.hermes/skills?ref=master" \
+| jq -r '.[].download_url' \
+| while read -r url; do
+    curl -fsSL "$url" -o "$HOME/.hermes/skills/$(basename "$url")"
+done
+
+for tool in ".claude" ".codex" ".gemini"; do
+    if [ -d "$HOME/$tool" ]; then
+        if [ ! -e "$HOME/$tool/skills" ]; then
+            ln -s "$HOME/.hermes/skills" "$HOME/$tool/skills"
+            echo "✓ Linked skills for $tool"
+        else
+            echo "⚠ $tool/skills already exists, skipping."
+        fi
+    fi
+done
+
+echo
+echo "✔ Hermes Skills installed successfully!"
+echo
+echo "Installed to:"
+echo "    $HOME/.hermes/skills"
+echo
+echo "Linked to:"
+[ -d "$HOME/.claude" ] && echo "    ~/.claude/skills"
+[ -d "$HOME/.codex" ] && echo "    ~/.codex/skills"
+[ -d "$HOME/.gemini" ] && echo "    ~/.gemini/skills"
+
 case ":$PATH:" in
     *":$INSTALL_DIR:"*)
         ;;
