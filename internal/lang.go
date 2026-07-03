@@ -1,8 +1,12 @@
 package internal
 
-import "path/filepath"
+import (
+	"log/slog"
+	"path/filepath"
+)
 
 func DetectLanguage(path string) string {
+	slog.Debug("Checking language")
 	switch filepath.Base(path) {
 	case "BUILD", "BUILD.bazel", "MODULE.bazel", "WORKSPACE", "WORKSPACE.bazel":
 		return "bazel"

@@ -3,7 +3,7 @@ package internal
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
+	"log/slog"
 	"os"
 	"os/exec"
 	"strings"
@@ -11,7 +11,7 @@ import (
 
 func GetCtagsPath() string {
 	if v, ok := os.LookupEnv("HERMES_CTAGS"); ok {
-		fmt.Printf("Found Custom CTAGS: %s\n", v)
+		slog.Info("Found Custom CTAGS: %s\n", v)
 		return v
 	} else {
 		return "ctags"

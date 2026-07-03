@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
@@ -10,28 +11,31 @@ import (
 )
 
 func AnalyzeFile(path string) (*FileAnalysis, error) {
+	slog.Debug("Analyzing File", "file", path)
 	content, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
 
 	lang := DetectLanguage(path)
+	slog.Debug("Detected Language", "language", lang)
 
 	imports := ExtractImports(content, lang)
-
+	slog.Debug("Found Imports: ", "imports", imports)
+	slog.Debug("Found Tags")
 	tags, err := GetTags(path)
 	if err != nil {
 		return nil, err
 	}
 
 	symbols, index := BuildSymbols(tags, path, lang)
-
 	fileInfo := FileInfo{
 		Lang:    lang,
 		LOC:     len(strings.Split(string(content), "\n")),
 		Imports: imports,
 		Symbols: symbols,
 	}
+	slog.Debug("Found symbols", "symbols", symbols)
 
 	return &FileAnalysis{
 		FileInfo: fileInfo,
@@ -42,10 +46,13 @@ func AnalyzeFile(path string) (*FileAnalysis, error) {
 func AnalyzeRepo(root string) (*AnalysisResult, error) {
 	ignoreFile := ".hermesignore"
 	_, err := os.Stat(ignoreFile)
-	if err != nil {
-		if os.IsNotExist(err) {
-			fmt.Printf("Hermes Ignore is Necessary to reduce the Map Size, %s is Missing.\n Exiting ...", ignoreFile)
+	if os.IsNotExist(err) {
+		slog.Debug("Creating the default .hermesignore file", "file", ignoreFile)
+		if err := os.WriteFile(ignoreFile, []byte(DefaultHermesIgnore), 0644); err != nil {
+			slog.Debug("Problem Creating HermesIgnore file", "file", ".hermesignore")
+			return nil, fmt.Errorf("failed to create %s: %w", ignoreFile, err)
 		}
+		slog.Info("Generated Default HermesIgnore File", "file", ignoreFile)
 	}
 	gitIgnore, err := gitignore.NewGitIgnore(".hermesignore", root)
 
@@ -63,7 +70,6 @@ func AnalyzeRepo(root string) (*AnalysisResult, error) {
 		if err != nil {
 			return err
 		}
-		//		matched := gitIgnore.Match(relPath, d.IsDir())
 
 		if gitIgnore.Match(relPath, d.IsDir()) {
 			if d.IsDir() {
@@ -95,6 +101,7 @@ func AnalyzeRepo(root string) (*AnalysisResult, error) {
 
 func IsDir(path string) bool {
 	info, err := os.Stat(path)
+	slog.Debug("Checking for directory: ", "isdir", info)
 	if err != nil {
 		return false
 	}
@@ -107,8 +114,8 @@ func MergeFileAnalysis(
 	file *FileAnalysis,
 	result *AnalysisResult,
 ) {
+	slog.Debug("Merging Analysis")
 	result.Files[path] = file.FileInfo
-
 	for k, v := range file.Index {
 		MergeIndexLocation(result.Index, k, v)
 	}
