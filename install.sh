@@ -71,6 +71,8 @@ if ! command -v jq >/dev/null 2>&1; then
     exit 1
 fi
 
+mkdir -p "$HOME/.hermes/skills"
+
 curl -fsSL "https://api.github.com/repos/Aeres-u99/hermes/contents/.hermes/skills?ref=master" \
 | jq -r '.[].download_url' \
 | while read -r url; do
@@ -78,14 +80,17 @@ curl -fsSL "https://api.github.com/repos/Aeres-u99/hermes/contents/.hermes/skill
 done
 
 for tool in ".claude" ".codex" ".gemini"; do
-    if [ -d "$HOME/$tool" ]; then
-        if [ ! -e "$HOME/$tool/skills" ]; then
-            ln -s "$HOME/.hermes/skills" "$HOME/$tool/skills"
-            echo "✓ Linked skills for $tool"
-        else
-            echo "⚠ $tool/skills already exists, skipping."
-        fi
+    SKILLS_DIR="$HOME/$tool/skills"
+
+    if [ ! -d "$SKILLS_DIR" ]; then
+        echo "⚠ $tool/skills not found, skipping."
+        continue
     fi
+
+    rm -f "$SKILLS_DIR/hermes"
+    ln -s "$HOME/.hermes/skills" "$SKILLS_DIR/hermes"
+
+    echo "✓ Linked Hermes skills to $tool"
 done
 
 echo
