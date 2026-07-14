@@ -8,14 +8,9 @@
 
 **A deterministic code indexing and retrieval system for AI-assisted development.**
 
-
-In Greek mythology, CodeAtlas was the messenger of the gods, known for speed, travel, and delivering information between distant places, Most importantly he was the guide of travelers, the messenger of the gods, and the navigator between worlds.
-CodeAtlas follows the same philosophy for codebases.
-It does not attempt to replace understanding.
-Instead, it guides developers and AI agents through large repositories, helping them navigate directly to the symbols, files, and implementations they need.
-The repository already contains the answer.
-
-CodeAtlas builds a rich, queryable symbol index of your entire codebase so LLMs can find the right code—fast. Instead of exploring millions of tokens, ask CodeAtlas and jump directly to what matters.
+CodeAtlas is named after the atlas, a collection of maps. 
+Just as an atlas transforms continents into something that can be explored and understood, CodeAtlas transforms a codebase into a navigable semantic map. 
+Instead of roads and mountains, it charts symbols, and dependencies, their locations, making large repositories easier for both humans and AI to understand.
 
 
 <p align="center">
