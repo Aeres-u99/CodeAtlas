@@ -1,17 +1,17 @@
-# Hermes Progress Summary
+# CodeAtlas Progress Summary
 
 ## Project Goal
 
 **DISCLAIMER: PART OF THE ROADMAP IS AI GENERATED for the understanding of viability**
 
-Hermes is a lightweight semantic code mapper for AI-assisted development.
+CodeAtlas is a lightweight semantic code mapper for AI-assisted development.
 The goal is not to perform static analysis, call graph generation, embeddings, or code intelligence.
 The goal is:
 
 ```text
 Repository
     ↓
-Hermes
+CodeAtlas
     ↓
 Compact Semantic Map
     ↓
@@ -66,7 +66,7 @@ type AnalysisResult struct {
 Responsibilities:
 
 * Walk repository
-* Apply .hermesignore
+* Apply .codeatlasignore
 * Analyze each file
 * Merge results
 * Build global symbol index
@@ -99,7 +99,7 @@ Example:
 
 Supported symbol mappings:
 
-| CTags    | Hermes  |
+| CTags    | CodeAtlas  |
 | -------- | ------- |
 | class    | cls     |
 | function | fn      |
@@ -172,7 +172,7 @@ to reduce token consumption.
 
 ---
 
-# .hermesignore
+# .codeatlasignore
 
 Implemented.
 
@@ -187,13 +187,13 @@ Important lesson learned:
 Correct constructor:
 
 ```go
-gitignore.NewGitIgnore(".hermesignore", root)
+gitignore.NewGitIgnore(".codeatlasignore", root)
 ```
 
 NOT:
 
 ```go
-gitignore.NewGitIgnore(root, ".hermesignore")
+gitignore.NewGitIgnore(root, ".codeatlasignore")
 ```
 
 This bug caused ignore matching to fail.
@@ -212,10 +212,10 @@ internal/grammar/**
 output/**
 
 *.pew
-hermes
+codeatlas
 
 *.json
-!hermes.json
+!codeatlas.json
 
 *.md
 ```
@@ -244,7 +244,7 @@ Grammar repositories were the biggest source of noise.
 Relevant source files:
 
 ```text
-cmd/hermes/main.go
+cmd/codeatlas/main.go
 
 internal/
 ├── analyzer.go
@@ -288,7 +288,7 @@ Reason:
 * Better language-specific parsing
 * Imports are grammar dependent
 
-### Keep Hermes Small
+### Keep CodeAtlas Small
 
 Avoid:
 
@@ -298,7 +298,7 @@ Avoid:
 * Embeddings
 * Semantic search
 
-Hermes should answer:
+CodeAtlas should answer:
 
 ```text
 "What does this repository look like?"
@@ -385,7 +385,7 @@ Measures:
 
 * LOC
 * Files
-* Hermes size
+* CodeAtlas size
 * Estimated tokens
 
 ---
@@ -409,7 +409,7 @@ Navigation Accuracy
 Input:
 
 * Tree
-* Hermes Map
+* CodeAtlas Map
 
 No source code.
 
@@ -429,7 +429,7 @@ Tree Only
 
 vs
 
-Tree + Hermes
+Tree + CodeAtlas
 
 Measure:
 
@@ -448,7 +448,7 @@ Tree Only
 
 vs
 
-Tree + Hermes
+Tree + CodeAtlas
 
 Measure:
 
@@ -477,7 +477,7 @@ Completed:
 
 ✅ Compact JSON Schema
 
-✅ .hermesignore
+✅ .codeatlasignore
 
 ✅ Repository Walking
 
@@ -503,7 +503,7 @@ Watcher
 → AI-DLC Integration
 ```
 
-Use codemap.json, whenever you can, after making any change, ensure that you rerun the hermes to build the codemap yet again.
+Use codemap.json, whenever you can, after making any change, ensure that you rerun the codeatlas to build the codemap yet again.
 I would like to continue working on this further
 
 ### Milestone
@@ -542,7 +542,7 @@ Watcher
 
   What the codemap gives me
 
-  The codemap.json is a well-structured snapshot of the hermes codebase. It covers:
+  The codemap.json is a well-structured snapshot of the codeatlas codebase. It covers:
 
   - Every source file with language, line count, and import list
   - Every exported and unexported symbol with file and line number, fully qualified (e.g. internal.AnalyzeRepo ->
@@ -568,7 +568,7 @@ Watcher
   ├──────────────────────┼─────┼──────────────────────────────────────────────────┤
   │ internal/lang.go     │ 31  │ Language detection                               │
   ├──────────────────────┼─────┼──────────────────────────────────────────────────┤
-  │ cmd/hermes/main.go   │ 55  │ CLI entry point                                  │
+  │ cmd/codeatlas/main.go   │ 55  │ CLI entry point                                  │
   └──────────────────────┴─────┴──────────────────────────────────────────────────┘
 
   Total meaningful Go code: ~660 LOC across 8 files.
@@ -585,7 +585,7 @@ Watcher
   reads, two edits.
   - Changing symbol visibility logic: internal.IsPublicSymbol is at symbols.go:77, internal.startsWithUpper at symbols.go:105
   — precise.
-  - Understanding data flow end-to-end: the import graph in the codemap (cmd/hermes/main.go imports internal,
+  - Understanding data flow end-to-end: the import graph in the codemap (cmd/codeatlas/main.go imports internal,
   internal/analyzer.go uses go-gitignore, internal/parser.go uses tree-sitter bindings) tells me the full dependency chain
   without reading any file.
 

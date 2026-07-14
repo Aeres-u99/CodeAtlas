@@ -1,4 +1,4 @@
-# Feature Implementation With Hermes
+# Feature Implementation With CodeAtlas
 
 Use this skill when adding functionality to an existing repository.
 
@@ -16,7 +16,7 @@ Locate existing implementation
   -> Modify code
 ```
 
-Do not start writing new code until you have found the closest existing behavior through Hermes.
+Do not start writing new code until you have found the closest existing behavior through CodeAtlas.
 
 ## Start From Existing Behavior
 
@@ -29,18 +29,18 @@ Examples:
 - "support a new parser" -> `Parser`, `Parse`, `Language`, `Detect`, `Analyze`
 - "add a repository backend" -> `Store`, `Repository`, `Client`, `Provider`
 
-Query Hermes:
+Query CodeAtlas:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Output|Formatter|Render|Encode|JSON)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Output|Formatter|Render|Encode|JSON)'
 ```
 
 Open the strongest match:
 
 ```bash
 SYMBOL='internal.NewFormatter'
-FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' hermes.json)
-LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' hermes.json)
+FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' codeatlas.json)
+LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' codeatlas.json)
 START=$((LINE > 30 ? LINE - 30 : 1))
 END=$((LINE + 140))
 sed -n "${START},${END}p" "$FILE"
@@ -51,19 +51,19 @@ sed -n "${START},${END}p" "$FILE"
 Look for symbols that represent extension boundaries:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Interface|Provider|Registry|Factory|Builder|Options|Config|Handler|Formatter|Parser|Store|Client)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Interface|Provider|Registry|Factory|Builder|Options|Config|Handler|Formatter|Parser|Store|Client)'
 ```
 
 Find constructors:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(^|\.)(New|Create|Build|Init)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(^|\.)(New|Create|Build|Init)'
 ```
 
 Find registration functions:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Register|Registry|Add|Mount|Install)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Register|Registry|Add|Mount|Install)'
 ```
 
 Open the relevant interface or factory before editing implementations.
@@ -73,19 +73,19 @@ Open the relevant interface or factory before editing implementations.
 After locating a relevant file, inspect its symbols:
 
 ```bash
-jq '.files["internal/formatter.go"].symbols' hermes.json
+jq '.files["internal/formatter.go"].symbols' codeatlas.json
 ```
 
 Inspect imports:
 
 ```bash
-jq '.files["internal/formatter.go"].imports' hermes.json
+jq '.files["internal/formatter.go"].imports' codeatlas.json
 ```
 
 Find symbols with the same naming family:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Formatter|Format|Render)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Formatter|Format|Render)'
 ```
 
 Read one or two neighboring implementations to copy established patterns:
@@ -118,15 +118,15 @@ Tests:
 - existing test symbol -> file:line
 - new/updated test surface
 
-Hermes freshness:
+CodeAtlas freshness:
 - regeneration required? yes/no
 ```
 
-This plan should come from Hermes queries and code reads, not directory guesses.
+This plan should come from CodeAtlas queries and code reads, not directory guesses.
 
 ## Adding New Symbols
 
-If the feature requires a new function, method, type, interface, or package, implement it normally, then regenerate Hermes after the edit if the workflow depends on continued symbol retrieval.
+If the feature requires a new function, method, type, interface, or package, implement it normally, then regenerate CodeAtlas after the edit if the workflow depends on continued symbol retrieval.
 
 Reason: the current snapshot cannot contain symbols added after generation.
 
@@ -145,20 +145,20 @@ Examples that usually do not require regeneration:
 - changing a validation condition
 - updating comments or formatting
 
-## Tests Through Hermes
+## Tests Through CodeAtlas
 
 Find existing tests by symbol:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Test.*Formatter|Formatter.*Test|Test.*Output|Output.*Test)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Test.*Formatter|Formatter.*Test|Test.*Output|Output.*Test)'
 ```
 
 Open the closest test:
 
 ```bash
 SYMBOL='internal.TestFormatterJSON'
-FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' hermes.json)
-LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' hermes.json)
+FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' codeatlas.json)
+LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' codeatlas.json)
 START=$((LINE > 30 ? LINE - 30 : 1))
 END=$((LINE + 140))
 sed -n "${START},${END}p" "$FILE"
@@ -177,13 +177,13 @@ Then return to symbol-driven investigation.
 Find command setup:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Command|Execute|Run|Flags|Options|Config)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Command|Execute|Run|Flags|Options|Config)'
 ```
 
 Look for existing flag registration:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Flag|Flags|Option|Bind)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Flag|Flags|Option|Bind)'
 ```
 
 Open the command symbol, then trace into the execution symbol. Add new CLI behavior where existing flags and options are already wired, unless the code clearly separates parsing from execution.
@@ -193,7 +193,7 @@ Open the command symbol, then trace into the execution symbol. Add new CLI behav
 Find handlers and routes:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Handler|Serve|Route|Controller|Endpoint)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Handler|Serve|Route|Controller|Endpoint)'
 ```
 
 If route strings are not symbolized, use targeted search:
@@ -205,7 +205,7 @@ rg -n 'GET |POST |PUT |DELETE |/api/'
 After finding the route file, inspect symbols:
 
 ```bash
-jq '.files["internal/server/routes.go"].symbols' hermes.json
+jq '.files["internal/server/routes.go"].symbols' codeatlas.json
 ```
 
 Then query handler symbols through `.idx`.
@@ -215,7 +215,7 @@ Then query handler symbols through `.idx`.
 Find model and serialization types:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Model|DTO|Request|Response|Config|Options|Record|Entity)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Model|DTO|Request|Response|Config|Options|Record|Entity)'
 ```
 
 Open the type definition and then inspect related constructors, validators, encoders, and tests.
@@ -227,16 +227,16 @@ Avoid adding fields without tracing where the type is constructed, serialized, v
 If you cannot find a similar implementation, broaden by concept:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Render|Write|Encode|Print|Format)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Render|Write|Encode|Print|Format)'
 ```
 
 If no symbols match because the feature is cross-cutting, find entrypoints and extension boundaries first:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Run|Execute|Serve|Process|Analyze)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Run|Execute|Serve|Process|Analyze)'
 ```
 
-If Hermes points to files that no longer exist, regenerate before implementing.
+If CodeAtlas points to files that no longer exist, regenerate before implementing.
 
 If the feature adds many symbols, regenerate midway before continuing symbol-based navigation.
 
@@ -245,8 +245,8 @@ If the feature adds many symbols, regenerate midway before continuing symbol-bas
 Before finishing:
 
 1. Re-run or inspect the relevant tests.
-2. Regenerate Hermes if symbol topology changed.
+2. Regenerate CodeAtlas if symbol topology changed.
 3. Use the refreshed index for any final navigation.
 4. Report edited files and verification performed.
 
-The feature is not complete if the code works but the Hermes snapshot is stale after structural changes.
+The feature is not complete if the code works but the CodeAtlas snapshot is stale after structural changes.

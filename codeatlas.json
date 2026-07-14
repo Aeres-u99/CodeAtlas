@@ -1,6 +1,6 @@
 {
  "v": 1,
- "generated": "2026-07-03T15:54:32Z",
+ "generated": "2026-07-14T08:28:18Z",
  "files": {
   ".github/workflows/release.yml": {
    "lang": "Unknown",
@@ -81,14 +81,14 @@
     }
    ]
   },
-  "cmd/hermes/main.go": {
+  "cmd/codeatlas/main.go": {
    "lang": "go",
-   "loc": 81,
+   "loc": 88,
    "imports": [
     "encoding/json",
     "flag",
     "fmt",
-    "github.com/Aeres-u99/hermes/v2/internal",
+    "github.com/Aeres-u99/codeatlas/v2/internal",
     "log/slog",
     "os"
    ],
@@ -105,15 +105,15 @@
     }
    ]
   },
-  "hermes": {
+  "codeatlas": {
    "lang": "Unknown",
-   "loc": 96004,
+   "loc": 95923,
    "imports": [],
    "symbols": []
   },
   "install.sh": {
    "lang": "Unknown",
-   "loc": 102,
+   "loc": 142,
    "imports": [],
    "symbols": []
   },
@@ -189,7 +189,7 @@
      "p": true
     },
     {
-     "n": "internal.DefaultHermesIgnore",
+     "n": "internal.DefaultCodeAtlasIgnore",
      "t": "const",
      "l": 13,
      "p": true
@@ -993,7 +993,7 @@
    "f": "internal/consts.go",
    "l": 4
   },
-  "internal.DefaultHermesIgnore": {
+  "internal.DefaultCodeAtlasIgnore": {
    "f": "internal/consts.go",
    "l": 13
   },
@@ -1298,11 +1298,11 @@
    "l": 13
   },
   "main": {
-   "f": "cmd/hermes/main.go",
+   "f": "cmd/codeatlas/main.go",
    "l": 1
   },
   "main.main": {
-   "f": "cmd/hermes/main.go",
+   "f": "cmd/codeatlas/main.go",
    "l": 12
   },
   "py_ts": {

@@ -1,4 +1,4 @@
-# Hermes Benchmark Report — Terraform
+# CodeAtlas Benchmark Report — Terraform
 
 ## Repository Information
 
@@ -8,8 +8,8 @@
 | Commit SHA              | 5ef60fcc6c11de94d6af1011d65b55be76325cd8 |
 | Total Files             | 5,411                                    |
 | Total LOC               | 667,641 (Go)                             |
-| Hermes Runtime (s)      | 13.8                                     |
-| Hermes JSON Size (KB)   | 7,773                                    |
+| CodeAtlas Runtime (s)      | 13.8                                     |
+| CodeAtlas JSON Size (KB)   | 7,773                                    |
 | Full Map Tokens (ref)   | 1,990,000                                |
 
 ---
@@ -45,13 +45,13 @@ Actual files modified:
 
 ---
 
-# Baseline Run (Without Hermes)
+# Baseline Run (Without CodeAtlas)
 
 ## Context Provided
 
 Repository tree only.
 
-No Hermes map.
+No CodeAtlas map.
 
 ---
 
@@ -85,15 +85,15 @@ No Hermes map.
 
 ---
 
-# Hermes Run
+# CodeAtlas Run
 
 ## Context Provided
 
 Repository tree
 
-Hermes JSON symbol index (queried for ConfigureProvider, NodeApplyableProvider, provider initialization)
+CodeAtlas JSON symbol index (queried for ConfigureProvider, NodeApplyableProvider, provider initialization)
 
-hermes.json
+codeatlas.json
 
 ---
 
@@ -101,9 +101,9 @@ hermes.json
 
 | Step | Action                                                                                           | Files Opened | Tokens Consumed |
 | ---- | ------------------------------------------------------------------------------------------------ | ------------ | --------------- |
-| 1    | grep hermes.json "ConfigureProvider" — 38 symbol matches returned across providers, mocks, grpc  | 0            | 9,840           |
+| 1    | grep codeatlas.json "ConfigureProvider" — 38 symbol matches returned across providers, mocks, grpc  | 0            | 9,840           |
 | 2    | Open internal/builtin/providers/terraform/provider.go — `terraform.Provider.ConfigureProvider` (incorrect: built-in meta-provider, not init infrastructure) | 1 | 11,939 |
-| 3    | Refine: grep hermes.json "NodeApplyableProvider" — 3 matches, narrows to node_provider.go        | 0            | 13,081          |
+| 3    | Refine: grep codeatlas.json "NodeApplyableProvider" — 3 matches, narrows to node_provider.go        | 0            | 13,081          |
 | 4    | Open internal/terraform/node_provider.go (correct)                                               | 1            | 14,773          |
 | 5    | Open internal/terraform/eval_context_builtin.go                                                  | 1            | 17,995          |
 
@@ -132,24 +132,24 @@ hermes.json
 
 ---
 
-# Hermes Generation Cost
+# CodeAtlas Generation Cost
 
 | Metric              | Value     |
 | ------------------- | --------- |
 | Generation Time (s)      | 13.8      |
 | Output Size (KB)         | 7,773     |
 | Full Map Tokens (ref)    | 1,990,000 |
-| Hermes Query Tokens      | 5,340     |
+| CodeAtlas Query Tokens      | 5,340     |
 
 ---
 
 # Exploration Collapse Ratio
 
-Without Hermes Steps: 8
+Without CodeAtlas Steps: 8
 
 ---
 
-With Hermes Steps: 3
+With CodeAtlas Steps: 3
 
 ---
 
@@ -165,7 +165,7 @@ Result:
 
 # Cost Analysis
 
-| Metric          | Without Hermes | With Hermes |
+| Metric          | Without CodeAtlas | With CodeAtlas |
 | --------------- | -------------- | ----------- |
 | Input Tokens    | 74,500         | 67,600      |
 | Output Tokens   | 3,500          | 3,600       |
@@ -184,7 +184,7 @@ Savings %:
 
 # Final Comparison
 
-| Metric               | Without Hermes | With Hermes | Improvement |
+| Metric               | Without CodeAtlas | With CodeAtlas | Improvement |
 | -------------------- | -------------- | ----------- | ----------- |
 | Files Opened         | 4              | 3           | -25.0%      |
 | Search Operations    | 2              | 1           | -50.0%      |
@@ -205,22 +205,22 @@ Cost Reduction: 7.2% ($0.0199 saved per run). Marginal benefit attributable to t
 
 Time Reduction: 20.0% fewer steps to correct file (step 4 vs step 5).
 
-Observed Outcome: Hermes located the target implementation but required one refinement step after an ambiguous initial result. The symbol `ConfigureProvider` spans 38 locations across interface definitions, gRPC wrappers, mock implementations, and the built-in meta-provider. On repositories of this scale (5,411 files), Hermes provides situational benefit dependent on query specificity. A precise initial query (`NodeApplyableProvider`) would have delivered full savings without the false lead.
+Observed Outcome: CodeAtlas located the target implementation but required one refinement step after an ambiguous initial result. The symbol `ConfigureProvider` spans 38 locations across interface definitions, gRPC wrappers, mock implementations, and the built-in meta-provider. On repositories of this scale (5,411 files), CodeAtlas provides situational benefit dependent on query specificity. A precise initial query (`NodeApplyableProvider`) would have delivered full savings without the false lead.
 
 ---
 
 # Retrieval Reduction Ratio
 
-Query Amplification = (Hermes Query Tokens / Full Map Tokens) × 100
+Query Amplification = (CodeAtlas Query Tokens / Full Map Tokens) × 100
 
 | Metric                | Value     |
 | --------------------- | --------- |
 | Full Map Tokens       | 1,990,000 |
-| Hermes Query Tokens   | 5,340     |
+| CodeAtlas Query Tokens   | 5,340     |
 | Query Amplification   | 0.268%    |
 | Reduction             | 99.732%   |
 
-Hermes functions as a retrieval system, not a context-stuffing system. The grep payload delivered to the LLM is 373× smaller than the full map. However, `ConfigureProvider` is a broadly-implemented interface name spanning 38 symbol locations, producing the largest query payload of the three benchmarks (5,340 tokens vs 880 for Loki). This reflects a characteristic of the symbol, not of Hermes.
+CodeAtlas functions as a retrieval system, not a context-stuffing system. The grep payload delivered to the LLM is 373× smaller than the full map. However, `ConfigureProvider` is a broadly-implemented interface name spanning 38 symbol locations, producing the largest query payload of the three benchmarks (5,340 tokens vs 880 for Loki). This reflects a characteristic of the symbol, not of CodeAtlas.
 
 ---
 
@@ -232,13 +232,13 @@ Hermes functions as a retrieval system, not a context-stuffing system. The grep 
 | Loki       | 17,160 | 510,562   | 11.6        | 32,797    | 880          |
 | Kubernetes | 30,536 | 5,068,787 | 66.2        | 57,493    | 2,059        |
 
-Key Observation: Repository size increases 6× in files and 10× in Go LOC across benchmarks. Query token consumption does not scale proportionally — it is governed by symbol frequency across implementations, not repository size. Hermes scales sub-linearly from a retrieval perspective.
+Key Observation: Repository size increases 6× in files and 10× in Go LOC across benchmarks. Query token consumption does not scale proportionally — it is governed by symbol frequency across implementations, not repository size. CodeAtlas scales sub-linearly from a retrieval perspective.
 
 ---
 
-# Hermes Target Repository Size
+# CodeAtlas Target Repository Size
 
-Hermes is designed primarily for medium and large repositories where repository exploration constitutes a significant portion of LLM token usage.
+CodeAtlas is designed primarily for medium and large repositories where repository exploration constitutes a significant portion of LLM token usage.
 
 | Repository Size    | Expected Benefit    |
 | ------------------ | ------------------- |
@@ -253,7 +253,7 @@ Terraform (5,411 files) sits at the boundary between situational and strong bene
 
 # Index Once, Query Many
 
-Hermes index generation is a one-time cost per repository. Retrieval savings are realized on every subsequent query.
+CodeAtlas index generation is a one-time cost per repository. Retrieval savings are realized on every subsequent query.
 
 | Metric                      | Value  |
 | --------------------------- | ------ |

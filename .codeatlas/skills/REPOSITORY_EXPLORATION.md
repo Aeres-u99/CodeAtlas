@@ -1,4 +1,4 @@
-# Repository Exploration With Hermes
+# Repository Exploration With CodeAtlas
 
 Use this skill when entering an unfamiliar repository. Your goal is to build a useful mental model while opening the fewest files possible.
 
@@ -10,7 +10,7 @@ The default path is:
 
 ```text
 Identify likely entrypoints
-  -> Query Hermes
+  -> Query CodeAtlas
   -> Open implementations
   -> Expand through discovered symbols
   -> Build mental model
@@ -20,16 +20,16 @@ Delay repository traversal as long as possible.
 
 ## First Checks
 
-Confirm the Hermes snapshot exists:
+Confirm the CodeAtlas snapshot exists:
 
 ```bash
-test -f hermes.json && echo "Hermes index available"
+test -f codeatlas.json && echo "CodeAtlas index available"
 ```
 
 Inspect the top-level symbol space:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | head -100
+jq -r '.idx | keys[]' codeatlas.json | head -100
 ```
 
 This is not a request to read 100 files. It is a quick look at naming structure: packages, namespaces, commands, handlers, services, and tests.
@@ -39,27 +39,27 @@ This is not a request to read 100 files. It is a quick look at naming structure:
 Start with symbols that commonly represent application entrypoints:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(^|\.)(main|Main|Run|Execute|Start|Serve|Listen|Handler|Command)$'
+jq -r '.idx | keys[]' codeatlas.json | rg '(^|\.)(main|Main|Run|Execute|Start|Serve|Listen|Handler|Command)$'
 ```
 
 Find command packages:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '^(cmd|cli|commands)\.'
+jq -r '.idx | keys[]' codeatlas.json | rg '^(cmd|cli|commands)\.'
 ```
 
 Find server or worker entrypoints:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Server|Worker|Daemon|Scheduler|Consumer|Processor|Handler)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Server|Worker|Daemon|Scheduler|Consumer|Processor|Handler)'
 ```
 
 Open only the strongest candidates. For each candidate:
 
 ```bash
 SYMBOL='internal.Server.Run'
-FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' hermes.json)
-LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' hermes.json)
+FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' codeatlas.json)
+LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' codeatlas.json)
 START=$((LINE > 30 ? LINE - 30 : 1))
 END=$((LINE + 120))
 sed -n "${START},${END}p" "$FILE"
@@ -78,10 +78,10 @@ After opening an entrypoint, extract the next symbols from code:
 - parser or analyzer functions
 - package-level orchestration functions
 
-For each discovered symbol, return to Hermes:
+For each discovered symbol, return to CodeAtlas:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg 'NewAnalyzer|Analyzer|Repository'
+jq -r '.idx | keys[]' codeatlas.json | rg 'NewAnalyzer|Analyzer|Repository'
 ```
 
 Do not follow imports blindly. Imports tell you dependencies, but `.idx` tells you where code lives.
@@ -91,19 +91,19 @@ Do not follow imports blindly. Imports tell you dependencies, but `.idx` tells y
 Once an entrypoint file is known, inspect metadata:
 
 ```bash
-jq '.files["cmd/hermes/main.go"]' hermes.json
+jq '.files["cmd/codeatlas/main.go"]' codeatlas.json
 ```
 
 Inspect symbols in that file:
 
 ```bash
-jq '.files["cmd/hermes/main.go"].symbols' hermes.json
+jq '.files["cmd/codeatlas/main.go"].symbols' codeatlas.json
 ```
 
 Inspect imports:
 
 ```bash
-jq '.files["cmd/hermes/main.go"].imports' hermes.json
+jq '.files["cmd/codeatlas/main.go"].imports' codeatlas.json
 ```
 
 Use imports to identify subsystem boundaries, then query subsystem symbols through `.idx`.
@@ -113,19 +113,19 @@ Use imports to identify subsystem boundaries, then query subsystem symbols throu
 If the repository uses package-style symbol names, survey packages through symbol prefixes:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | sed 's/\.[^.]*$//' | sort -u
+jq -r '.idx | keys[]' codeatlas.json | sed 's/\.[^.]*$//' | sort -u
 ```
 
 Then inspect symbols in a package:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '^internal\.analyzer\.'
+jq -r '.idx | keys[]' codeatlas.json | rg '^internal\.analyzer\.'
 ```
 
 If symbols are flatter, filter by terms:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Analyze|Parse|Index|Config|Command|Server)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Analyze|Parse|Index|Config|Command|Server)'
 ```
 
 ## File Importance Without Reading Files
@@ -137,7 +137,7 @@ jq -r '
 .files
 | to_entries[]
 | "\(.value.loc)\t\(.key)"
-' hermes.json | sort -nr | head -30
+' codeatlas.json | sort -nr | head -30
 ```
 
 This is useful after entrypoint retrieval, not before it. Large files are not automatically important; they are candidates to correlate with symbols already discovered.
@@ -178,14 +178,14 @@ If entrypoint discovery is noisy:
 Example:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '^cmd\.' | rg '(Run|Execute|main|Command)'
+jq -r '.idx | keys[]' codeatlas.json | rg '^cmd\.' | rg '(Run|Execute|main|Command)'
 ```
 
 ## When To Fall Back
 
 Fallback to repository exploration only when:
 
-- `hermes.json` is missing.
+- `codeatlas.json` is missing.
 - `.idx` does not contain enough useful symbols after refinement.
 - You need non-symbol assets such as schemas, templates, migrations, config files, or documentation.
 - File paths in `.idx` are stale.
@@ -201,7 +201,7 @@ rg --files | rg '(schema|migration|config|template|README|Makefile)'
 
 Avoid:
 
-- Reading `README` first when the task is implementation-oriented and Hermes exists.
+- Reading `README` first when the task is implementation-oriented and CodeAtlas exists.
 - Listing every directory to infer architecture.
 - Opening all files in a package before querying symbols.
 - Using import graphs as a substitute for symbol lookup.
@@ -211,9 +211,9 @@ Good exploration produces a short symbol chain and a small set of opened code wi
 
 ## Freshness During Exploration
 
-If the repository has changed since `hermes.json` was generated, exploration can become misleading.
+If the repository has changed since `codeatlas.json` was generated, exploration can become misleading.
 
-Regenerate Hermes when you observe:
+Regenerate CodeAtlas when you observe:
 
 - indexed file paths that no longer exist
 - symbols whose definitions moved

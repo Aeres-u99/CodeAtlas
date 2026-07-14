@@ -7,9 +7,9 @@ pkg/**
 internal/grammar/**
 go.mod
 go.sum
-.hermesignore
+.codeatlasignore
 *.md
 *.json
 assets/**
 .gitignore
-.hermes/**
+.codeatlas/**

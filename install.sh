@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="Aeres-u99/hermes"
-BINARY="hermes"
+REPO="Aeres-u99/codeatlas"
+BINARY="codeatlas"
 if ! command -v curl >/dev/null 2>&1; then
     echo "Error: curl is required."
     exit 1
@@ -59,24 +59,24 @@ mv "$TMP" "$INSTALL_DIR/$BINARY"
 
 chmod +x "$INSTALL_DIR/$BINARY"
 echo
-echo "✔ Hermes installed successfully!"
+echo "✔ CodeAtlas installed successfully!"
 echo
 echo "Installed to:"
 echo "    $INSTALL_DIR/$BINARY"
 
-mkdir -p "$HOME/.hermes/skills"
+mkdir -p "$HOME/.codeatlas/skills"
 
 if ! command -v jq >/dev/null 2>&1; then
-    echo "Error: jq is required to install Hermes skills."
+    echo "Error: jq is required to install CodeAtlas skills."
     exit 1
 fi
 
-mkdir -p "$HOME/.hermes/skills"
+mkdir -p "$HOME/.codeatlas/skills"
 
-curl -fsSL "https://api.github.com/repos/Aeres-u99/hermes/contents/.hermes/skills?ref=master" \
+curl -fsSL "https://api.github.com/repos/Aeres-u99/codeatlas/contents/.codeatlas/skills?ref=master" \
 | jq -r '.[].download_url' \
 | while read -r url; do
-    curl -fsSL "$url" -o "$HOME/.hermes/skills/$(basename "$url")"
+    curl -fsSL "$url" -o "$HOME/.codeatlas/skills/$(basename "$url")"
 done
 
 for tool in ".claude" ".codex" ".gemini"; do
@@ -87,17 +87,17 @@ for tool in ".claude" ".codex" ".gemini"; do
         continue
     fi
 
-    rm -f "$SKILLS_DIR/hermes"
-    ln -s "$HOME/.hermes/skills" "$SKILLS_DIR/hermes"
+    rm -f "$SKILLS_DIR/codeatlas"
+    ln -s "$HOME/.codeatlas/skills" "$SKILLS_DIR/codeatlas"
 
-    echo "✓ Linked Hermes skills to $tool"
+    echo "✓ Linked CodeAtlas skills to $tool"
 done
 
 echo
-echo "✔ Hermes Skills installed successfully!"
+echo "✔ CodeAtlas Skills installed successfully!"
 echo
 echo "Installed to:"
-echo "    $HOME/.hermes/skills"
+echo "    $HOME/.codeatlas/skills"
 echo
 echo "Linked to:"
 [ -d "$HOME/.claude" ] && echo "    ~/.claude/skills"
@@ -137,5 +137,5 @@ esac
 
 echo
 echo "Verify installation:"
-echo "    hermes --help"
+echo "    codeatlas --help"
 echo

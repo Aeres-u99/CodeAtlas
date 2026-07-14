@@ -44,17 +44,17 @@ func AnalyzeFile(path string) (*FileAnalysis, error) {
 }
 
 func AnalyzeRepo(root string) (*AnalysisResult, error) {
-	ignoreFile := ".hermesignore"
+	ignoreFile := ".codeatlasignore"
 	_, err := os.Stat(ignoreFile)
 	if os.IsNotExist(err) {
-		slog.Debug("Creating the default .hermesignore file", "file", ignoreFile)
-		if err := os.WriteFile(ignoreFile, []byte(DefaultHermesIgnore), 0644); err != nil {
-			slog.Debug("Problem Creating HermesIgnore file", "file", ".hermesignore")
+		slog.Debug("Creating the default .codeatlasignore file", "file", ignoreFile)
+		if err := os.WriteFile(ignoreFile, []byte(DefaultCodeAtlasIgnore), 0644); err != nil {
+			slog.Debug("Problem Creating CodeAtlasIgnore file", "file", ".codeatlasignore")
 			return nil, fmt.Errorf("failed to create %s: %w", ignoreFile, err)
 		}
-		slog.Info("Generated Default HermesIgnore File", "file", ignoreFile)
+		slog.Info("Generated Default CodeAtlasIgnore File", "file", ignoreFile)
 	}
-	gitIgnore, err := gitignore.NewGitIgnore(".hermesignore", root)
+	gitIgnore, err := gitignore.NewGitIgnore(".codeatlasignore", root)
 
 	merged := &AnalysisResult{
 		Files: make(map[string]FileInfo),

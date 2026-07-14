@@ -1,4 +1,4 @@
-# Bug Investigation With Hermes
+# Bug Investigation With CodeAtlas
 
 Use this skill when debugging failures, errors, regressions, crashes, test failures, or incorrect behavior.
 
@@ -10,7 +10,7 @@ The default path is:
 
 ```text
 Extract symbols from failure evidence
-  -> Query Hermes
+  -> Query CodeAtlas
   -> Open implementation
   -> Trace execution path
   -> Identify failure point
@@ -30,7 +30,7 @@ Extract lookup terms in this order:
 6. Error strings and log messages.
 7. File paths and line numbers.
 
-Symbols are preferred because Hermes indexes symbols directly.
+Symbols are preferred because CodeAtlas indexes symbols directly.
 
 ## Stack Trace Workflow
 
@@ -44,15 +44,15 @@ internal.AnalyzeRepo(...)
 Query exactly:
 
 ```bash
-jq -r '.idx["internal.AnalyzeRepo"]' hermes.json
+jq -r '.idx["internal.AnalyzeRepo"]' codeatlas.json
 ```
 
 Open around the symbol:
 
 ```bash
 SYMBOL='internal.AnalyzeRepo'
-FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' hermes.json)
-LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' hermes.json)
+FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' codeatlas.json)
+LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' codeatlas.json)
 START=$((LINE > 40 ? LINE - 40 : 1))
 END=$((LINE + 140))
 sed -n "${START},${END}p" "$FILE"
@@ -61,13 +61,13 @@ sed -n "${START},${END}p" "$FILE"
 If the exact symbol is missing:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg 'AnalyzeRepo'
+jq -r '.idx | keys[]' codeatlas.json | rg 'AnalyzeRepo'
 ```
 
 Then broaden:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Analyze|Analyzer)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Analyze|Analyzer)'
 ```
 
 ## Failing Test Workflow
@@ -75,15 +75,15 @@ jq -r '.idx | keys[]' hermes.json | rg '(Analyze|Analyzer)'
 If a test fails, look up the test symbol first:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg 'TestAnalyzeRepo'
+jq -r '.idx | keys[]' codeatlas.json | rg 'TestAnalyzeRepo'
 ```
 
 Open the test:
 
 ```bash
 SYMBOL='internal.TestAnalyzeRepo'
-FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' hermes.json)
-LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' hermes.json)
+FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' codeatlas.json)
+LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' codeatlas.json)
 START=$((LINE > 20 ? LINE - 20 : 1))
 END=$((LINE + 120))
 sed -n "${START},${END}p" "$FILE"
@@ -103,10 +103,10 @@ If only an error string is available, use targeted text search:
 rg -n 'failed to analyze repository'
 ```
 
-Once the file is found, use Hermes metadata to inspect nearby symbols:
+Once the file is found, use CodeAtlas metadata to inspect nearby symbols:
 
 ```bash
-jq '.files["internal/analyzer.go"].symbols' hermes.json
+jq '.files["internal/analyzer.go"].symbols' codeatlas.json
 ```
 
 Then switch back to `.idx` for any discovered symbols.
@@ -116,7 +116,7 @@ Then switch back to `.idx` for any discovered symbols.
 After opening the failing symbol:
 
 1. Identify the immediate call that can produce the failure.
-2. Query that callee through Hermes.
+2. Query that callee through CodeAtlas.
 3. Read a narrow window around the callee.
 4. Repeat until the failure condition is visible.
 
@@ -134,7 +134,7 @@ Each arrow should come from code you read, not guesswork.
 Query each discovered symbol:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg 'ParseFiles|ParseFile|extractSymbols'
+jq -r '.idx | keys[]' codeatlas.json | rg 'ParseFiles|ParseFile|extractSymbols'
 ```
 
 ## Interface And Implementation Bugs
@@ -142,30 +142,30 @@ jq -r '.idx | keys[]' hermes.json | rg 'ParseFiles|ParseFile|extractSymbols'
 If the failure is caused by a contract mismatch, locate the interface first:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg 'Analyzer|Parser|Store|Repository|Client'
+jq -r '.idx | keys[]' codeatlas.json | rg 'Analyzer|Parser|Store|Repository|Client'
 ```
 
 Open the interface definition, then locate implementations:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Analyzer|Parser|Store)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Analyzer|Parser|Store)'
 ```
 
 Use `.files` imports to identify which implementation the failing entrypoint wires in:
 
 ```bash
-jq '.files["cmd/hermes/main.go"].imports' hermes.json
+jq '.files["cmd/codeatlas/main.go"].imports' codeatlas.json
 ```
 
 Then follow constructor symbols:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg 'New.*Analyzer|New.*Store|New.*Parser'
+jq -r '.idx | keys[]' codeatlas.json | rg 'New.*Analyzer|New.*Store|New.*Parser'
 ```
 
 ## Configuration, Routes, And Non-Symbol Failures
 
-Hermes is symbol-first. Some bug causes are not symbols:
+CodeAtlas is symbol-first. Some bug causes are not symbols:
 
 - config keys
 - route paths
@@ -178,13 +178,13 @@ Hermes is symbol-first. Some bug causes are not symbols:
 For these, use targeted text search:
 
 ```bash
-rg -n 'HERMES_CONFIG|/api/analyze|repository_id'
+rg -n 'CODEATLAS_CONFIG|/api/analyze|repository_id'
 ```
 
 After finding a file, inspect symbols in that file:
 
 ```bash
-jq '.files["internal/config.go"].symbols' hermes.json
+jq '.files["internal/config.go"].symbols' codeatlas.json
 ```
 
 Then continue with symbol lookup.
@@ -194,19 +194,19 @@ Then continue with symbol lookup.
 Once you identify a likely faulty symbol, find related symbols:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg 'Analyze|Analyzer|Analysis'
+jq -r '.idx | keys[]' codeatlas.json | rg 'Analyze|Analyzer|Analysis'
 ```
 
 Inspect neighboring symbols in the file:
 
 ```bash
-jq '.files["internal/analyzer.go"].symbols' hermes.json
+jq '.files["internal/analyzer.go"].symbols' codeatlas.json
 ```
 
 Check relevant tests:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Test.*Analyze|Analyze.*Test)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Test.*Analyze|Analyze.*Test)'
 ```
 
 Use language tooling or test commands after symbol retrieval has scoped the problem.
@@ -239,23 +239,23 @@ This prevents debugging from drifting into broad repository reading.
 
 ## Common Failure Modes
 
-If the stack trace line differs from the Hermes line, the index may be stale. Query by symbol name and inspect the current file. Regenerate Hermes after structural changes.
+If the stack trace line differs from the CodeAtlas line, the index may be stale. Query by symbol name and inspect the current file. Regenerate CodeAtlas after structural changes.
 
 If the symbol is absent, the failure may involve generated code, dynamically invoked code, or a stale snapshot. Try narrowed `rg`, then regenerate if symbols have changed.
 
 If many symbols match, add package prefixes, receiver names, or test names:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '^internal\.' | rg 'Analyze'
+jq -r '.idx | keys[]' codeatlas.json | rg '^internal\.' | rg 'Analyze'
 ```
 
-If no symbols match an error string, use targeted text search for the string and immediately switch back to Hermes once a containing file or symbol is known.
+If no symbols match an error string, use targeted text search for the string and immediately switch back to CodeAtlas once a containing file or symbol is known.
 
 ## Freshness Rule For Bug Fixes
 
 Regeneration is usually not required for a small bug fix inside an existing function.
 
-Regenerate Hermes if the fix:
+Regenerate CodeAtlas if the fix:
 
 - adds a new function, method, struct, interface, or package
 - renames a symbol

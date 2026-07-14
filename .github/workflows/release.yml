@@ -17,22 +17,22 @@ jobs:
           - os: ubuntu-latest
             goos: linux
             goarch: amd64
-            artifact: hermes-linux-amd64
+            artifact: codeatlas-linux-amd64
 
           - os: ubuntu-latest
             goos: linux
             goarch: arm64
-            artifact: hermes-linux-arm64
+            artifact: codeatlas-linux-arm64
 
           - os: macos-latest
             goos: darwin
             goarch: amd64
-            artifact: hermes-darwin-amd64
+            artifact: codeatlas-darwin-amd64
 
           - os: macos-latest
             goos: darwin
             goarch: arm64
-            artifact: hermes-darwin-arm64
+            artifact: codeatlas-darwin-arm64
 
     runs-on: ${{ matrix.os }}
 
@@ -52,7 +52,7 @@ jobs:
           mkdir -p dist
           go build \
             -o dist/${{ matrix.artifact }} \
-            ./cmd/hermes
+            ./cmd/codeatlas
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4

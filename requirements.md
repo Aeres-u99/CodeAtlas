@@ -1,4 +1,4 @@
-### Hermes
+### CodeAtlas
 ⏺ This is a great idea. Here's my recommendation before we go deeper:
 
   Core format - a two-layer map:
@@ -33,18 +33,18 @@
   }
 ```
 
-### How Hermes would work:
+### How CodeAtlas would work:
 
   ctags run  →  symbol name, file, line, kind
   treesitter →  precise signature, scope end line, imports
-  merge      →  write/patch hermes.json
+  merge      →  write/patch codeatlas.json
 
   LLM workflow then becomes:
-  1. Load hermes.json (~3k tokens for 3000 LOC)
+  1. Load codeatlas.json (~3k tokens for 3000 LOC)
   2. Look up symbol in idx → get file:line
   3. Read only lines l to scope_end via treesitter scope
 
   Key questions to nail down before building:
-  - Should it be a single hermes.json at root, or per-directory shards (better for monorepos)?
+  - Should it be a single codeatlas.json at root, or per-directory shards (better for monorepos)?
   - Do you want call edges in v1 or defer to v2?
   - Which languages need to be supported first - Python/HCL/YAML for this repo, or broader?

@@ -1,21 +1,21 @@
 <div align="center">
 
-<img src="assets/logo.png" alt="Hermes Logo" width="220"/>
+<img src="assets/logo.png" alt="CodeAtlas Logo" width="220"/>
 
-# Hermes <img src="assets/wing.png" width="32"/>
+# CodeAtlas 🗺️ 
 
 ### Symbolic Code Index. Instant Navigation.
 
 **A deterministic code indexing and retrieval system for AI-assisted development.**
 
 
-In Greek mythology, Hermes was the messenger of the gods, known for speed, travel, and delivering information between distant places, Most importantly he was the guide of travelers, the messenger of the gods, and the navigator between worlds.
-Hermes follows the same philosophy for codebases.
+In Greek mythology, CodeAtlas was the messenger of the gods, known for speed, travel, and delivering information between distant places, Most importantly he was the guide of travelers, the messenger of the gods, and the navigator between worlds.
+CodeAtlas follows the same philosophy for codebases.
 It does not attempt to replace understanding.
 Instead, it guides developers and AI agents through large repositories, helping them navigate directly to the symbols, files, and implementations they need.
 The repository already contains the answer.
 
-Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can find the right code—fast. Instead of exploring millions of tokens, ask Hermes and jump directly to what matters.
+CodeAtlas builds a rich, queryable symbol index of your entire codebase so LLMs can find the right code—fast. Instead of exploring millions of tokens, ask CodeAtlas and jump directly to what matters.
 
 
 <p align="center">
@@ -32,13 +32,13 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
 
 * [🛠️ Installation](#-installation)
 * [✨ Key Benefits](#-key-benefits)
-* [📖 What is Hermes?](#-what-is-hermes)
+* [📖 What is CodeAtlas?](#-what-is-codeatlas)
 * [⚙️ How It Works](#️-how-it-works)
   * [1️⃣ Index Generation](#1️⃣-index-generation)
   * [2️⃣ Query](#2️⃣-query)
   * [3️⃣ Navigate](#3️⃣-navigate)
-  * [📦 .hermesignore](#-hermesignore)
-* [🚀 Why Hermes Matters](#-why-hermes-matters)
+  * [📦 .codeatlasignore](#-codeatlasignore)
+* [🚀 Why CodeAtlas Matters](#-why-codeatlas-matters)
   * [Running Tests](#running-tests)
   * [Cross-Platform Builds](#cross-platform-builds)
 * [📊 Benchmarks](#-benchmarks)
@@ -46,7 +46,7 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
   * [Detailed Reports](#detailed-reports)
   * [Retrieval Reduction](#retrieval-reduction)
 * [🔎 First Lookup Accuracy](#-first-lookup-accuracy)
-* [📦 When To Use Hermes](#-when-to-use-hermes)
+* [📦 When To Use CodeAtlas](#-when-to-use-codeatlas)
 * [🔄 Index Once. Query Many.](#-index-once-query-many)
 * [🏗 Architecture](#-architecture)
 * [🧭 Design Principles](#-design-principles)
@@ -66,7 +66,7 @@ Hermes builds a rich, queryable symbol index of your entire codebase so LLMs can
 
 ## Prerequisites
 
-Hermes requires:
+CodeAtlas requires:
 
 - Go 1.24+
 - Universal Ctags https://github.com/universal-ctags/ctags?tab=GPL-2.0-1-ov-file (GPL 2.0)
@@ -109,7 +109,7 @@ Universal Ctags
 Install the latest release:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Aeres-u99/hermes/master/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Aeres-u99/codeatlas/master/install.sh | bash
 ```
 
 If `~/.local/bin` is not on your `PATH`, the installer will tell you how to add it.
@@ -117,29 +117,29 @@ If `~/.local/bin` is not on your `PATH`, the installer will tell you how to add 
 Verify the installation:
 
 ```bash
-hermes --help
+codeatlas --help
 ```
 
 ```bash
-hermes --help
+codeatlas --help
 ```
 
 #### Manual Installation
 
 Download the appropriate binary from the GitHub Releases page.
 
-Rename it to `hermes`, make it executable, and place it somewhere on your `PATH`:
+Rename it to `codeatlas`, make it executable, and place it somewhere on your `PATH`:
 
 ```bash
-chmod +x hermes-linux-amd64
-mv hermes-linux-amd64 hermes
-sudo mv hermes /usr/local/bin/
+chmod +x codeatlas-linux-amd64
+mv codeatlas-linux-amd64 codeatlas
+sudo mv codeatlas /usr/local/bin/
 ```
 
 Verify:
 
 ```bash
-hermes --help
+codeatlas --help
 ```
 
 ## Upgrading
@@ -147,16 +147,16 @@ hermes --help
 Run the installer again or Download manually and install:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/Aeres-u99/hermes/master/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Aeres-u99/codeatlas/master/install.sh | bash
 ```
 
 ---
 
-## Build Hermes
+## Build CodeAtlas
 
 ```bash
-git clone https://github.com/Aeres-u99/hermes.git
-cd hermes
+git clone https://github.com/Aeres-u99/codeatlas.git
+cd codeatlas
 make
 ```
 
@@ -173,7 +173,7 @@ make test
 
 ## Cross-Platform Builds
 
-Hermes uses CGo (via Tree-sitter), so cross-compilation requires a C cross-compiler for the target architecture — `GOARCH` alone is not enough.
+CodeAtlas uses CGo (via Tree-sitter), so cross-compilation requires a C cross-compiler for the target architecture — `GOARCH` alone is not enough.
 
 ### Linux arm64 (from Linux amd64)
 
@@ -197,13 +197,13 @@ Build:
 make build-linux-arm64
 ```
 
-Output: `dist/hermes-linux-arm64`
+Output: `dist/codeatlas-linux-arm64`
 
 Transfer the binary to your ARM machine and install:
 
 ```bash
-scp dist/hermes-linux-arm64 user@arm-host:~
-ssh user@arm-host 'sudo install ~/hermes-linux-arm64 /usr/local/bin/hermes'
+scp dist/codeatlas-linux-arm64 user@arm-host:~
+ssh user@arm-host 'sudo install ~/codeatlas-linux-arm64 /usr/local/bin/codeatlas'
 ```
 
 ---
@@ -214,7 +214,7 @@ ssh user@arm-host 'sudo install ~/hermes-linux-arm64 /usr/local/bin/hermes'
 make build-linux-amd64
 ```
 
-Output: `dist/hermes-linux-amd64`
+Output: `dist/codeatlas-linux-amd64`
 
 ---
 
@@ -228,7 +228,7 @@ Darwin cross-compilation from Linux requires the macOS SDK and is not supported 
 make build-darwin-arm64
 ```
 
-Output: `dist/hermes-darwin-arm64`
+Output: `dist/codeatlas-darwin-arm64`
 
 #### Intel (amd64)
 
@@ -236,7 +236,7 @@ Output: `dist/hermes-darwin-arm64`
 make build-darwin-amd64
 ```
 
-Output: `dist/hermes-darwin-amd64`
+Output: `dist/codeatlas-darwin-amd64`
 
 ---
 
@@ -246,20 +246,20 @@ Output: `dist/hermes-darwin-amd64`
 make build-all
 ```
 
-Produces both `dist/hermes-linux-amd64` and `dist/hermes-linux-arm64`.
+Produces both `dist/codeatlas-linux-amd64` and `dist/codeatlas-linux-arm64`.
 
 ---
 
-## Install Hermes
+## Install CodeAtlas
 
 ```bash
-sudo install hermes /usr/local/bin/hermes
+sudo install codeatlas /usr/local/bin/codeatlas
 ```
 
 Verify installation:
 
 ```bash
-hermes --help
+codeatlas --help
 ```
 
 ---
@@ -272,9 +272,9 @@ hermes --help
 
 ---
 
-# 📖 What is Hermes?
+# 📖 What is CodeAtlas?
 
-Hermes is a repository indexing and retrieval system that produces a structured symbol index (`hermes.json`) of your codebase.
+CodeAtlas is a repository indexing and retrieval system that produces a structured symbol index (`codeatlas.json`) of your codebase.
 
 You can then query this index using simple tools such as:
 
@@ -285,13 +285,13 @@ You can then query this index using simple tools such as:
 * Aider
 * Custom agents
 
-Instead of feeding your entire repository to an LLM, Hermes retrieves only the relevant functions, types, files, and locations.
+Instead of feeding your entire repository to an LLM, CodeAtlas retrieves only the relevant functions, types, files, and locations.
 
 ```text
 Repository
     │
     ▼
- Hermes Index
+ CodeAtlas Index
     │
     ▼
  grep / jq / rg
@@ -309,7 +309,7 @@ Repository
 
 ### 1️⃣ Index Generation
 
-Hermes parses the repository using Tree-sitter and extracts:
+CodeAtlas parses the repository using Tree-sitter and extracts:
 
 * Functions
 * Methods
@@ -321,13 +321,13 @@ Hermes parses the repository using Tree-sitter and extracts:
 * File Locations
 
 ```bash
-hermes -input .
+codeatlas -input .
 ```
 
 Output:
 
 ```text
-hermes.json
+codeatlas.json
 ```
 
 ---
@@ -337,32 +337,32 @@ hermes.json
 Search for symbols using standard UNIX tools.
 
 ```bash
-grep -C3 "ConfigureProvider" hermes.json
+grep -C3 "ConfigureProvider" codeatlas.json
 ```
 
 or
 
 ```bash
-jq '.idx["ConfigureProvider"]' hermes.json
+jq '.idx["ConfigureProvider"]' codeatlas.json
 ```
 
 ---
 
 ### 3️⃣ Navigate
 
-Open the exact files and locations returned by Hermes.
+Open the exact files and locations returned by CodeAtlas.
 
 No blind repository exploration required.
 
 ---
 
-#### 📦 .hermesignore
+#### 📦 .codeatlasignore
 
-Hermes supports a `.hermesignore` file to exclude files and directories that provide little or no value for code navigation.
+CodeAtlas supports a `.codeatlasignore` file to exclude files and directories that provide little or no value for code navigation.
 
 Ignoring generated code, vendored dependencies, documentation, test fixtures, repository metadata, and build artifacts can significantly reduce index size, indexing time, and query noise.
 
-A well-tuned `.hermesignore` helps Hermes focus on implementation code rather than auxiliary repository content.
+A well-tuned `.codeatlasignore` helps CodeAtlas focus on implementation code rather than auxiliary repository content.
 
 ### Example
 
@@ -397,7 +397,7 @@ tmp/
 .vscode/
 ```
 
-### Why Use `.hermesignore`?
+### Why Use `.codeatlasignore`?
 
 - ⚡ Faster indexing
 - 📉 Smaller index size
@@ -405,13 +405,13 @@ tmp/
 - 💰 Lower token consumption
 - 🔍 Reduced search noise
 
-Hermes is designed around the principle that not all repository content is equally valuable for navigation. A carefully curated `.hermesignore` allows the index to focus on the code that matters most.
+CodeAtlas is designed around the principle that not all repository content is equally valuable for navigation. A carefully curated `.codeatlasignore` allows the index to focus on the code that matters most.
 
 > **Tip:** For large repositories such as Kubernetes, Loki, or Terraform, excluding `.git/**`, vendored dependencies, generated files, and documentation can dramatically reduce index size while preserving the vast majority of implementation-relevant symbols.
 
 ---
 
-# 🚀 Why Hermes Matters
+# 🚀 Why CodeAtlas Matters
 
 Modern LLM workflows spend the majority of their time and tokens exploring repositories.
 
@@ -431,7 +431,7 @@ Open More Files
 Find Implementation
 ```
 
-Hermes transforms that into:
+CodeAtlas transforms that into:
 
 ```text
 Lookup Symbol
@@ -453,31 +453,31 @@ Benefits:
 ## Generate Your First Index
 
 ```bash
-hermes -input .
+codeatlas -input .
 ```
 
 This generates:
 
 ```text
-hermes.json
+codeatlas.json
 ```
 
 which can then be queried using:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json
+jq -r '.idx | keys[]' codeatlas.json
 ```
 
 or
 
 ```bash
-jq -r '.idx["main.main"]' hermes.json
+jq -r '.idx["main.main"]' codeatlas.json
 ```
 
 ---
 # 📊 Benchmarks
 
-Hermes has been benchmarked against three real-world repositories of different scales.
+CodeAtlas has been benchmarked against three real-world repositories of different scales.
 
 | Repository | Files  | LOC  | Runtime (s) | Full Map Tokens | Query Tokens | Retrieval Reduction |
 | ---------- | ------ | ---- | ----------- | --------------- | ------------ | ------------------- |
@@ -507,7 +507,7 @@ Hermes has been benchmarked against three real-world repositories of different s
 
 ## Retrieval Reduction
 
-Hermes is a retrieval system, not a context-stuffing system.
+CodeAtlas is a retrieval system, not a context-stuffing system.
 
 | Repository | Full Map Tokens | Query Tokens |
 | ---------- | --------------- | ------------ |
@@ -515,7 +515,7 @@ Hermes is a retrieval system, not a context-stuffing system.
 | Loki       | 8,396,000       | 880          |
 | Terraform  | 1,990,000       | 5,340        |
 
-Hermes consistently reduces retrieval payloads by over **99.7%**.
+CodeAtlas consistently reduces retrieval payloads by over **99.7%**.
 
 The entire repository is never sent to the model.
 
@@ -531,15 +531,15 @@ Only the relevant symbols are retrieved.
 | Loki       | ✅ Yes                 |
 | Terraform  | ❌ Required Refinement |
 
-Hermes performs best when queried using specific symbols.
+CodeAtlas performs best when queried using specific symbols.
 
 Broad interfaces and common method names may require one or more refinement steps.
 
 ---
 
-# 📦 When To Use Hermes
+# 📦 When To Use CodeAtlas
 
-Hermes is optimized for medium and large repositories.
+CodeAtlas is optimized for medium and large repositories.
 
 | Repository Size      | Expected Benefit | Recommendation            |
 | -------------------- | ---------------- | ------------------------- |
@@ -572,7 +572,7 @@ Repository
  Generate Index
     │
     ▼
-  hermes.json
+  codeatlas.json
     │
     ├── Query #1
     ├── Query #2
@@ -581,7 +581,7 @@ Repository
     └── Query #N
 ```
 
-The generation cost is paid once. Or, if post Query #1 the syntax or structure has changed significantly, regenerate the hermes.json to ensure that the map is not stale.
+The generation cost is paid once. Or, if post Query #1 the syntax or structure has changed significantly, regenerate the codeatlas.json to ensure that the map is not stale.
 
 The retrieval benefit compounds over time.
 
@@ -596,7 +596,7 @@ Repository
 Tree-sitter Parser
     │
     ▼
-Hermes Index
+CodeAtlas Index
     │
     ├── Functions
     ├── Methods
@@ -657,15 +657,15 @@ Designed to understand source structure rather than plain text.
 
 # ⚡ Quick Start
 
-Hermes Help
+CodeAtlas Help
 ```
-❯ hermes --help
-hermes - The Code Map you will Ever need!
-For custom CTAGS path use Environment Variable HERMES_CTAGS for custom path
+❯ codeatlas --help
+codeatlas - The Code Map you will Ever need!
+For custom CTAGS path use Environment Variable CODEATLAS_CTAGS for custom path
   -input string
     	Code to Parse (default "code.py")
   -output string
-    	Code to Parse (default "hermes.json")
+    	Code to Parse (default "codeatlas.json")
 Have Fun
 
 ```
@@ -673,19 +673,19 @@ Have Fun
 Generate an index:
 
 ```bash
-hermes -input .
+codeatlas -input .
 ```
 
 Search for a symbol:
 
 ```bash
-grep -C3 "MyFunction" hermes.json
+grep -C3 "MyFunction" codeatlas.json
 ```
 
 Retrieve with jq:
 
 ```bash
-jq '.idx["MyFunction"]' hermes.json
+jq '.idx["MyFunction"]' codeatlas.json
 ```
 
 Open the returned file and line.

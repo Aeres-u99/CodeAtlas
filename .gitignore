@@ -2,6 +2,6 @@
 bin/
 dist/
 *.json
-!hermes.json
-hermes-linux-*
-hermes-darwin-*
+!codeatlas.json
+codeatlas-linux-*
+codeatlas-darwin-*

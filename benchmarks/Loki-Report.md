@@ -1,4 +1,4 @@
-# Hermes Benchmark Report — Loki
+# CodeAtlas Benchmark Report — Loki
 
 ## Repository Information
 
@@ -8,8 +8,8 @@
 | Commit SHA              | 66ac3f08235b581a8b7149c11129ea5c008ce8ef |
 | Total Files             | 17,160                                   |
 | Total LOC               | 510,562 (Go)                             |
-| Hermes Runtime (s)      | 11.6                                     |
-| Hermes JSON Size (KB)   | 32,797                                   |
+| CodeAtlas Runtime (s)      | 11.6                                     |
+| CodeAtlas JSON Size (KB)   | 32,797                                   |
 | Full Map Tokens (ref)   | 8,396,000                                |
 
 ---
@@ -40,13 +40,13 @@ Actual files modified:
 
 ---
 
-# Baseline Run (Without Hermes)
+# Baseline Run (Without CodeAtlas)
 
 ## Context Provided
 
 Repository tree only.
 
-No Hermes map.
+No CodeAtlas map.
 
 ---
 
@@ -80,15 +80,15 @@ No Hermes map.
 
 ---
 
-# Hermes Run
+# CodeAtlas Run
 
 ## Context Provided
 
 Repository tree
 
-Hermes JSON symbol index (queried for RecordRangeAndInstantQueryMetrics, ExecTime, query logging)
+CodeAtlas JSON symbol index (queried for RecordRangeAndInstantQueryMetrics, ExecTime, query logging)
 
-hermes.json
+codeatlas.json
 
 ---
 
@@ -96,7 +96,7 @@ hermes.json
 
 | Step | Action                                           | Files Opened | Tokens Consumed |
 | ---- | ------------------------------------------------ | ------------ | --------------- |
-| 1    | Query hermes.json for query duration symbols     | 0            | 5,380           |
+| 1    | Query codeatlas.json for query duration symbols     | 0            | 5,380           |
 | 2    | Open pkg/logql/metrics.go (direct navigation)    | 1            | 9,800           |
 | 3    | Open pkg/logql/engine.go (confirm execTime path) | 1            | 13,200          |
 | 4    | Verify duration_ms addition site                 | 0            | 14,100          |
@@ -118,24 +118,24 @@ hermes.json
 
 ---
 
-# Hermes Generation Cost
+# CodeAtlas Generation Cost
 
 | Metric              | Value     |
 | ------------------- | --------- |
 | Generation Time (s)      | 11.6      |
 | Output Size (KB)         | 32,797    |
 | Full Map Tokens (ref)    | 8,396,000 |
-| Hermes Query Tokens      | 880       |
+| CodeAtlas Query Tokens      | 880       |
 
 ---
 
 # Exploration Collapse Ratio
 
-Without Hermes Steps: 8
+Without CodeAtlas Steps: 8
 
 ---
 
-With Hermes Steps: 4
+With CodeAtlas Steps: 4
 
 ---
 
@@ -151,7 +151,7 @@ Result:
 
 # Cost Analysis
 
-| Metric          | Without Hermes | With Hermes |
+| Metric          | Without CodeAtlas | With CodeAtlas |
 | --------------- | -------------- | ----------- |
 | Input Tokens    | 86,800         | 39,900      |
 | Output Tokens   | 4,100          | 2,700       |
@@ -170,7 +170,7 @@ Savings %:
 
 # Final Comparison
 
-| Metric               | Without Hermes | With Hermes | Improvement |
+| Metric               | Without CodeAtlas | With CodeAtlas | Improvement |
 | -------------------- | -------------- | ----------- | ----------- |
 | Files Opened         | 4              | 2           | -50.0%      |
 | Search Operations    | 2              | 1           | -50.0%      |
@@ -183,30 +183,30 @@ Savings %:
 
 # Conclusion
 
-Navigation Reduction: 50.0% fewer steps; hermes.json symbol index surfaced RecordRangeAndInstantQueryMetrics and execTime directly, bypassing a false lead into pkg/distributor/http.go and two directory traversals.
+Navigation Reduction: 50.0% fewer steps; codeatlas.json symbol index surfaced RecordRangeAndInstantQueryMetrics and execTime directly, bypassing a false lead into pkg/distributor/http.go and two directory traversals.
 
-Token Reduction: 53.1% fewer total tokens; skipping distributor/http.go and two search passes saves ~48,300 tokens. Hermes grep query consumed only 880 tokens (vs 8.4M full map).
+Token Reduction: 53.1% fewer total tokens; skipping distributor/http.go and two search passes saves ~48,300 tokens. CodeAtlas grep query consumed only 880 tokens (vs 8.4M full map).
 
 Cost Reduction: 50.2% cost reduction per query on Claude Sonnet ($0.1617 saved per run).
 
 Time Reduction: 60.0% faster to correct file; step 2 vs step 5.
 
-Observed Outcome: Hermes located `RecordRangeAndInstantQueryMetrics` in `pkg/logql/metrics.go` and the `execTime` computation in `pkg/logql/engine.go` in 2 file reads vs 4 without Hermes. The 880-token grep query (smallest of the three benchmarks) demonstrates precise retrieval for a tightly-named symbol — `execTime` and `RecordRangeAndInstantQueryMetrics` appear in few files, producing a minimal query payload from an 8.4M-token map.
+Observed Outcome: CodeAtlas located `RecordRangeAndInstantQueryMetrics` in `pkg/logql/metrics.go` and the `execTime` computation in `pkg/logql/engine.go` in 2 file reads vs 4 without CodeAtlas. The 880-token grep query (smallest of the three benchmarks) demonstrates precise retrieval for a tightly-named symbol — `execTime` and `RecordRangeAndInstantQueryMetrics` appear in few files, producing a minimal query payload from an 8.4M-token map.
 
 ---
 
 # Retrieval Reduction Ratio
 
-Query Amplification = (Hermes Query Tokens / Full Map Tokens) × 100
+Query Amplification = (CodeAtlas Query Tokens / Full Map Tokens) × 100
 
 | Metric                | Value     |
 | --------------------- | --------- |
 | Full Map Tokens       | 8,396,000 |
-| Hermes Query Tokens   | 880       |
+| CodeAtlas Query Tokens   | 880       |
 | Query Amplification   | 0.010%    |
 | Reduction             | 99.990%   |
 
-Hermes functions as a retrieval system, not a context-stuffing system. The grep payload delivered to the LLM is 9,541× smaller than the full map. An 8.4M-token repository was reduced to an 880-token retrieval payload for this task — the smallest query output across the three benchmarks, reflecting that `RecordRangeAndInstantQueryMetrics` and `execTime` are tightly scoped symbols.
+CodeAtlas functions as a retrieval system, not a context-stuffing system. The grep payload delivered to the LLM is 9,541× smaller than the full map. An 8.4M-token repository was reduced to an 880-token retrieval payload for this task — the smallest query output across the three benchmarks, reflecting that `RecordRangeAndInstantQueryMetrics` and `execTime` are tightly scoped symbols.
 
 ---
 
@@ -218,13 +218,13 @@ Hermes functions as a retrieval system, not a context-stuffing system. The grep 
 | Loki       | 17,160 | 510,562   | 11.6        | 32,797    | 880          |
 | Kubernetes | 30,536 | 5,068,787 | 66.2        | 57,493    | 2,059        |
 
-Key Observation: Repository size increases 6× in files and 10× in Go LOC across benchmarks. Query token consumption does not scale proportionally — it is governed by symbol frequency across implementations, not repository size. Hermes scales sub-linearly from a retrieval perspective.
+Key Observation: Repository size increases 6× in files and 10× in Go LOC across benchmarks. Query token consumption does not scale proportionally — it is governed by symbol frequency across implementations, not repository size. CodeAtlas scales sub-linearly from a retrieval perspective.
 
 ---
 
-# Hermes Target Repository Size
+# CodeAtlas Target Repository Size
 
-Hermes is designed primarily for medium and large repositories where repository exploration constitutes a significant portion of LLM token usage.
+CodeAtlas is designed primarily for medium and large repositories where repository exploration constitutes a significant portion of LLM token usage.
 
 | Repository Size    | Expected Benefit    |
 | ------------------ | ------------------- |
@@ -239,7 +239,7 @@ Loki (17,160 files) sits in the strong benefit range. Navigation savings of ~50%
 
 # Index Once, Query Many
 
-Hermes index generation is a one-time cost per repository. Retrieval savings are realized on every subsequent query.
+CodeAtlas index generation is a one-time cost per repository. Retrieval savings are realized on every subsequent query.
 
 | Metric                      | Value   |
 | --------------------------- | ------- |

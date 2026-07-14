@@ -1,4 +1,4 @@
-# Hermes Benchmark Report — Kubernetes
+# CodeAtlas Benchmark Report — Kubernetes
 
 ## Repository Information
 
@@ -8,8 +8,8 @@
 | Commit SHA              | 4def0ddd2e69e508ba06fa30016ef68e31875aba |
 | Total Files             | 30,536                                   |
 | Total LOC               | 5,068,787 (Go)                           |
-| Hermes Runtime (s)      | 66.2                                     |
-| Hermes JSON Size (KB)   | 57,493                                   |
+| CodeAtlas Runtime (s)      | 66.2                                     |
+| CodeAtlas JSON Size (KB)   | 57,493                                   |
 | Full Map Tokens (ref)   | 14,718,000                               |
 
 ---
@@ -44,13 +44,13 @@ Actual files modified:
 
 ---
 
-# Baseline Run (Without Hermes)
+# Baseline Run (Without CodeAtlas)
 
 ## Context Provided
 
 Repository tree only.
 
-No Hermes map.
+No CodeAtlas map.
 
 ---
 
@@ -86,15 +86,15 @@ No Hermes map.
 
 ---
 
-# Hermes Run
+# CodeAtlas Run
 
 ## Context Provided
 
 Repository tree
 
-Hermes JSON symbol index (queried for PodRunning, SetPodStatus, phase transition)
+CodeAtlas JSON symbol index (queried for PodRunning, SetPodStatus, phase transition)
 
-hermes.json
+codeatlas.json
 
 ---
 
@@ -102,7 +102,7 @@ hermes.json
 
 | Step | Action                                          | Files Opened | Tokens Consumed |
 | ---- | ----------------------------------------------- | ------------ | --------------- |
-| 1    | Query hermes.json for pod lifecycle symbols      | 0            | 6,600           |
+| 1    | Query codeatlas.json for pod lifecycle symbols      | 0            | 6,600           |
 | 2    | Open pkg/kubelet/kubelet.go (direct navigation) | 1            | 20,500          |
 | 3    | Open pkg/kubelet/status/status_manager.go       | 1            | 26,000          |
 | 4    | Confirm node name field in pod spec             | 0            | 27,200          |
@@ -124,24 +124,24 @@ hermes.json
 
 ---
 
-# Hermes Generation Cost
+# CodeAtlas Generation Cost
 
 | Metric              | Value      |
 | ------------------- | ---------- |
 | Generation Time (s)      | 66.2       |
 | Output Size (KB)         | 57,493     |
 | Full Map Tokens (ref)    | 14,718,000 |
-| Hermes Query Tokens      | 2,059      |
+| CodeAtlas Query Tokens      | 2,059      |
 
 ---
 
 # Exploration Collapse Ratio
 
-Without Hermes Steps: 10
+Without CodeAtlas Steps: 10
 
 ---
 
-With Hermes Steps: 4
+With CodeAtlas Steps: 4
 
 ---
 
@@ -157,7 +157,7 @@ Result:
 
 # Cost Analysis
 
-| Metric          | Without Hermes | With Hermes |
+| Metric          | Without CodeAtlas | With CodeAtlas |
 | --------------- | -------------- | ----------- |
 | Input Tokens    | 161,200        | 79,900      |
 | Output Tokens   | 5,800          | 3,200       |
@@ -176,7 +176,7 @@ Savings %:
 
 # Final Comparison
 
-| Metric               | Without Hermes | With Hermes | Improvement |
+| Metric               | Without CodeAtlas | With CodeAtlas | Improvement |
 | -------------------- | -------------- | ----------- | ----------- |
 | Files Opened         | 5              | 2           | -60.0%      |
 | Search Operations    | 2              | 1           | -50.0%      |
@@ -191,28 +191,28 @@ Savings %:
 
 Navigation Reduction: 60.0% fewer exploration steps; LLM went directly to kubelet.go via symbol index instead of traversing 3 directory levels and opening a false lead.
 
-Token Reduction: 50.2% fewer total tokens; eliminating 6 unnecessary tool calls and 3 large file reads (kubelet_pods.go, pod_manager.go, kuberuntime_manager.go) saves ~83,900 tokens. Hermes grep query consumed only 2,059 tokens (vs 14.7M full map).
+Token Reduction: 50.2% fewer total tokens; eliminating 6 unnecessary tool calls and 3 large file reads (kubelet_pods.go, pod_manager.go, kuberuntime_manager.go) saves ~83,900 tokens. CodeAtlas grep query consumed only 2,059 tokens (vs 14.7M full map).
 
 Cost Reduction: 49.6% cost reduction per query on Claude Sonnet ($0.2829 saved per run).
 
 Time Reduction: 60.0% fewer steps; correct file reached at step 2 vs step 6.
 
-Observed Outcome: Hermes located `kubelet.Kubelet.SyncPod` and the PodPending→PodRunning transition in `pkg/kubelet/kubelet.go` in 2 file reads vs 5 without Hermes. The 2,059-token grep query (against a 14.7M-token full map) surfaced the correct subsystem directly, eliminating a false navigation into `pod/pod_manager.go` and three directory traversals.
+Observed Outcome: CodeAtlas located `kubelet.Kubelet.SyncPod` and the PodPending→PodRunning transition in `pkg/kubelet/kubelet.go` in 2 file reads vs 5 without CodeAtlas. The 2,059-token grep query (against a 14.7M-token full map) surfaced the correct subsystem directly, eliminating a false navigation into `pod/pod_manager.go` and three directory traversals.
 
 ---
 
 # Retrieval Reduction Ratio
 
-Query Amplification = (Hermes Query Tokens / Full Map Tokens) × 100
+Query Amplification = (CodeAtlas Query Tokens / Full Map Tokens) × 100
 
 | Metric                | Value      |
 | --------------------- | ---------- |
 | Full Map Tokens       | 14,718,000 |
-| Hermes Query Tokens   | 2,059      |
+| CodeAtlas Query Tokens   | 2,059      |
 | Query Amplification   | 0.014%     |
 | Reduction             | 99.986%    |
 
-Hermes functions as a retrieval system, not a context-stuffing system. The grep payload delivered to the LLM is 7,145× smaller than the full map. A 14.7M-token repository was reduced to a 2,059-token retrieval payload for this task.
+CodeAtlas functions as a retrieval system, not a context-stuffing system. The grep payload delivered to the LLM is 7,145× smaller than the full map. A 14.7M-token repository was reduced to a 2,059-token retrieval payload for this task.
 
 ---
 
@@ -224,13 +224,13 @@ Hermes functions as a retrieval system, not a context-stuffing system. The grep 
 | Loki       | 17,160 | 510,562   | 11.6        | 32,797    | 880          |
 | Kubernetes | 30,536 | 5,068,787 | 66.2        | 57,493    | 2,059        |
 
-Key Observation: Repository size increases 6× in files and 10× in Go LOC across benchmarks. Query token consumption does not scale proportionally — it is governed by symbol frequency across implementations, not repository size. Hermes scales sub-linearly from a retrieval perspective.
+Key Observation: Repository size increases 6× in files and 10× in Go LOC across benchmarks. Query token consumption does not scale proportionally — it is governed by symbol frequency across implementations, not repository size. CodeAtlas scales sub-linearly from a retrieval perspective.
 
 ---
 
-# Hermes Target Repository Size
+# CodeAtlas Target Repository Size
 
-Hermes is designed primarily for medium and large repositories where repository exploration constitutes a significant portion of LLM token usage.
+CodeAtlas is designed primarily for medium and large repositories where repository exploration constitutes a significant portion of LLM token usage.
 
 | Repository Size    | Expected Benefit    |
 | ------------------ | ------------------- |
@@ -245,7 +245,7 @@ Kubernetes (30,536 files) sits firmly in the primary target range. Navigation sa
 
 # Index Once, Query Many
 
-Hermes index generation is a one-time cost per repository. Retrieval savings are realized on every subsequent query.
+CodeAtlas index generation is a one-time cost per repository. Retrieval savings are realized on every subsequent query.
 
 | Metric                      | Value   |
 | --------------------------- | ------- |

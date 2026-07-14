@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/Aeres-u99/hermes/v2/internal"
+	"github.com/Aeres-u99/codeatlas/v2/internal"
 	"log/slog"
 	"os"
 )
@@ -16,10 +16,10 @@ func main() {
 
 	flag.Usage = func() {
 		w := flag.CommandLine.Output()
-		fmt.Fprintf(w, "\nHermes - The Code Map You'll Ever Need\n\n")
+		fmt.Fprintf(w, "\nCodeAtlas - The Code Map You'll Ever Need\n\n")
 
 		fmt.Fprintf(w, "Environment Variables:\n")
-		fmt.Fprintf(w, "  HERMES_CTAGS   Path to a custom Universal Ctags binary\n")
+		fmt.Fprintf(w, "  CODEATLAS_CTAGS   Path to a custom Universal Ctags binary\n")
 		fmt.Fprintf(w, "  LOG_LEVEL      debug | info | warn | error\n\n")
 
 		fmt.Fprintf(w, "Options:\n")
@@ -31,7 +31,7 @@ func main() {
 
 	flag.StringVar(&logLevel, "log-level", "info", "Log Level for debugging and Testing")
 	flag.StringVar(&inputFile, "input", "code.py", "Code to Parse")
-	flag.StringVar(&outputFile, "output", "hermes.json", "Code to Parse")
+	flag.StringVar(&outputFile, "output", "codeatlas.json", "Code to Parse")
 	slog.Debug("Found Flags",
 		"logLevel", logLevel,
 		"input", inputFile,
@@ -40,7 +40,7 @@ func main() {
 	flag.Parse()
 	if logLevel == "info" {
 		// Verify if it has been set in Environment Variable
-		if env := os.Getenv("HERMES_LOG_LEVEL"); env != "" {
+		if env := os.Getenv("CODEATLAS_LOG_LEVEL"); env != "" {
 			logLevel = env
 		}
 	}

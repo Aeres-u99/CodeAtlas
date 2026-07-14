@@ -1,4 +1,4 @@
-# Architecture Discovery With Hermes
+# Architecture Discovery With CodeAtlas
 
 Use this skill when you need to understand subsystem design, boundaries, data flow, or ownership.
 
@@ -16,28 +16,28 @@ Locate entrypoints
   -> Build subsystem map
 ```
 
-Use Hermes metadata before opening files broadly.
+Use CodeAtlas metadata before opening files broadly.
 
 ## Start With Entrypoints
 
 Find symbols that initiate control flow:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(^|\.)(main|Run|Execute|Start|Serve|Listen|Process|Analyze)$'
+jq -r '.idx | keys[]' codeatlas.json | rg '(^|\.)(main|Run|Execute|Start|Serve|Listen|Process|Analyze)$'
 ```
 
 Find command or application packages:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '^(cmd|app|cli|internal)\.'
+jq -r '.idx | keys[]' codeatlas.json | rg '^(cmd|app|cli|internal)\.'
 ```
 
 Open the likely entrypoints and read enough to identify orchestration symbols:
 
 ```bash
 SYMBOL='cmd.Run'
-FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' hermes.json)
-LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' hermes.json)
+FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' codeatlas.json)
+LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' codeatlas.json)
 START=$((LINE > 40 ? LINE - 40 : 1))
 END=$((LINE + 160))
 sed -n "${START},${END}p" "$FILE"
@@ -50,7 +50,7 @@ Architecture is often expressed in interfaces, abstract base types, protocols, p
 Query likely boundaries:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Interface|Provider|Store|Repository|Client|Service|Handler|Parser|Analyzer|Formatter|Backend|Driver)$'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Interface|Provider|Store|Repository|Client|Service|Handler|Parser|Analyzer|Formatter|Backend|Driver)$'
 ```
 
 Open interface-like symbols first. They define contracts and subsystem boundaries more clearly than leaf functions.
@@ -58,7 +58,7 @@ Open interface-like symbols first. They define contracts and subsystem boundarie
 Then find implementations using related terms:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(FileStore|MemoryStore|HTTPClient|Parser|Analyzer|Formatter)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(FileStore|MemoryStore|HTTPClient|Parser|Analyzer|Formatter)'
 ```
 
 ## Use Imports After Locating Files
@@ -66,7 +66,7 @@ jq -r '.idx | keys[]' hermes.json | rg '(FileStore|MemoryStore|HTTPClient|Parser
 Once a relevant file is identified, inspect imports:
 
 ```bash
-jq '.files["internal/analyzer.go"].imports' hermes.json
+jq '.files["internal/analyzer.go"].imports' codeatlas.json
 ```
 
 Imports help answer:
@@ -115,7 +115,7 @@ jq -r '
 .files
 | to_entries[]
 | "\(.value.loc)\t\(.key)"
-' hermes.json | sort -nr | head -40
+' codeatlas.json | sort -nr | head -40
 ```
 
 Use this to supplement symbol discovery. A large file may be central, but it may also be generated, legacy, or test-heavy. Correlate file size with symbols and imports before drawing conclusions.
@@ -125,19 +125,19 @@ Use this to supplement symbol discovery. A large file may be central, but it may
 List symbol prefixes:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | sed 's/\.[^.]*$//' | sort -u
+jq -r '.idx | keys[]' codeatlas.json | sed 's/\.[^.]*$//' | sort -u
 ```
 
 Inspect symbols in a prefix:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '^internal\.'
+jq -r '.idx | keys[]' codeatlas.json | rg '^internal\.'
 ```
 
 Compare packages by symbol count:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json \
+jq -r '.idx | keys[]' codeatlas.json \
 | sed 's/\.[^.]*$//' \
 | sort \
 | uniq -c \
@@ -151,25 +151,25 @@ Use this to identify dense subsystems, then retrieve entrypoints and interfaces 
 For "How does X work?", query X-related symbols:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Analyze|Analysis|Analyzer)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Analyze|Analysis|Analyzer)'
 ```
 
 For "Where is X configured?", query configuration symbols:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Config|Options|Settings|Flag|Env)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Config|Options|Settings|Flag|Env)'
 ```
 
 For "Where does X enter the system?", query entrypoint symbols:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Run|Execute|Serve|Handle|Process)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Run|Execute|Serve|Handle|Process)'
 ```
 
 For "What implements X?", query the interface name and common implementation suffixes:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Store|Repository|Provider|Client)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Store|Repository|Provider|Client)'
 ```
 
 ## Avoid False Architecture
@@ -209,7 +209,7 @@ After finding a relevant source file, inspect `.files[path].symbols` and continu
 
 Architecture discovery is especially sensitive to stale indexes.
 
-Regenerate Hermes when:
+Regenerate CodeAtlas when:
 
 - package ownership changed
 - files were moved

@@ -1,5 +1,5 @@
-BINARY_NAME=hermes
-CMD_PATH=./cmd/hermes
+BINARY_NAME=codeatlas
+CMD_PATH=./cmd/codeatlas
 DIST_DIR=dist
 
 .PHONY: build run test clean build-linux-amd64 build-linux-arm64 build-darwin-amd64 build-darwin-arm64 build-all

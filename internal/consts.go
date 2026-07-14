@@ -10,7 +10,7 @@ type Dependency struct {
 	Target string
 }
 
-const DefaultHermesIgnore = `.git/
+const DefaultCodeAtlasIgnore = `.git/
 .gitmodules
 .gitignore
 .gitattributes
@@ -102,5 +102,5 @@ docs/_build/
 *.tfstate
 *.tfstate.*
 *.kubeconfig
-hermes.json
+codeatlas.json
 `

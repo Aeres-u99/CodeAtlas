@@ -10,7 +10,7 @@ import (
 )
 
 func GetCtagsPath() string {
-	if v, ok := os.LookupEnv("HERMES_CTAGS"); ok {
+	if v, ok := os.LookupEnv("CODEATLAS_CTAGS"); ok {
 		slog.Info("Found Custom CTAGS: %s\n", v)
 		return v
 	} else {

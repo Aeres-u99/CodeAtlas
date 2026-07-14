@@ -1,4 +1,4 @@
-# Refactoring With Hermes
+# Refactoring With CodeAtlas
 
 Use this skill when performing structural changes, cleanup, extraction, renaming, moving code, or changing contracts.
 
@@ -23,15 +23,15 @@ Refactoring should be symbol-driven. Do not start by opening directories and man
 Start with the symbol being refactored:
 
 ```bash
-jq -r '.idx["internal.AnalyzeRepo"]' hermes.json
+jq -r '.idx["internal.AnalyzeRepo"]' codeatlas.json
 ```
 
 Open the implementation:
 
 ```bash
 SYMBOL='internal.AnalyzeRepo'
-FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' hermes.json)
-LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' hermes.json)
+FILE=$(jq -r --arg s "$SYMBOL" '.idx[$s].f' codeatlas.json)
+LINE=$(jq -r --arg s "$SYMBOL" '.idx[$s].l' codeatlas.json)
 START=$((LINE > 40 ? LINE - 40 : 1))
 END=$((LINE + 160))
 sed -n "${START},${END}p" "$FILE"
@@ -40,7 +40,7 @@ sed -n "${START},${END}p" "$FILE"
 If the exact symbol is missing:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg 'AnalyzeRepo|Analyze|Analyzer'
+jq -r '.idx | keys[]' codeatlas.json | rg 'AnalyzeRepo|Analyze|Analyzer'
 ```
 
 Do not edit until you have the correct symbol definition.
@@ -50,37 +50,37 @@ Do not edit until you have the correct symbol definition.
 Find the naming family:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Analyze|Analyzer|Analysis)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Analyze|Analyzer|Analysis)'
 ```
 
 Inspect symbols in the same file:
 
 ```bash
-jq '.files["internal/analyzer.go"].symbols' hermes.json
+jq '.files["internal/analyzer.go"].symbols' codeatlas.json
 ```
 
 Inspect imports:
 
 ```bash
-jq '.files["internal/analyzer.go"].imports' hermes.json
+jq '.files["internal/analyzer.go"].imports' codeatlas.json
 ```
 
 Look for tests:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Test.*Analyze|Analyze.*Test|Benchmark.*Analyze)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Test.*Analyze|Analyze.*Test|Benchmark.*Analyze)'
 ```
 
 This gives an initial impact surface before broad searching.
 
 ## Identify Impact Scope
 
-Hermes maps definitions, not all references. Use Hermes to locate definitions, then use language tooling or targeted text search for references.
+CodeAtlas maps definitions, not all references. Use CodeAtlas to locate definitions, then use language tooling or targeted text search for references.
 
 Definition scope:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(AnalyzeRepo|Analyzer)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(AnalyzeRepo|Analyzer)'
 ```
 
 Reference scope:
@@ -95,14 +95,14 @@ For method names that may collide, include receiver or type context when possibl
 rg -n '\.AnalyzeRepo\(|func .*AnalyzeRepo'
 ```
 
-Use the language server, compiler, or test runner for final validation. Hermes is the navigation layer, not a type checker.
+Use the language server, compiler, or test runner for final validation. CodeAtlas is the navigation layer, not a type checker.
 
 ## Neighboring Implementations
 
 Before extracting or renaming, inspect similar code:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Parse|Parser|Index|Indexer|Walk|Walker)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Parse|Parser|Index|Indexer|Walk|Walker)'
 ```
 
 Open only the relevant neighboring symbols. You are looking for project conventions:
@@ -125,13 +125,13 @@ For a symbol rename:
 2. Find related symbols and tests.
 3. Use targeted reference search or language tooling to update references.
 4. Run tests or type checks.
-5. Regenerate Hermes because symbol names changed.
+5. Regenerate CodeAtlas because symbol names changed.
 6. Use the regenerated index for any follow-up navigation.
 
 Example:
 
 ```bash
-jq -r '.idx["internal.AnalyzeRepo"]' hermes.json
+jq -r '.idx["internal.AnalyzeRepo"]' codeatlas.json
 rg -n '\bAnalyzeRepo\b'
 ```
 
@@ -144,13 +144,13 @@ For moving files or packages:
 1. Locate all symbols in the source file:
 
 ```bash
-jq '.files["internal/analyzer.go"].symbols' hermes.json
+jq '.files["internal/analyzer.go"].symbols' codeatlas.json
 ```
 
 2. Inspect imports of the source file:
 
 ```bash
-jq '.files["internal/analyzer.go"].imports' hermes.json
+jq '.files["internal/analyzer.go"].imports' codeatlas.json
 ```
 
 3. Find references to moved symbols:
@@ -162,7 +162,7 @@ rg -n '\bAnalyzeRepo\b|\bAnalyzer\b'
 4. Move code using project conventions.
 5. Update imports and package ownership.
 6. Run tests or type checks.
-7. Regenerate Hermes because file paths and symbol locations changed.
+7. Regenerate CodeAtlas because file paths and symbol locations changed.
 
 File moves always make the old snapshot stale.
 
@@ -176,17 +176,17 @@ For extracting helper functions or types:
 4. Check neighboring helpers in the same file:
 
 ```bash
-jq '.files["internal/analyzer.go"].symbols' hermes.json
+jq '.files["internal/analyzer.go"].symbols' codeatlas.json
 ```
 
 5. Choose a name consistent with existing symbols:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(extract|build|parse|collect|write)'
+jq -r '.idx | keys[]' codeatlas.json | rg '(extract|build|parse|collect|write)'
 ```
 
 6. Add the new helper.
-7. Regenerate Hermes if the new helper is a symbol that future navigation should see.
+7. Regenerate CodeAtlas if the new helper is a symbol that future navigation should see.
 
 ## Interface Refactor Workflow
 
@@ -195,7 +195,7 @@ For interface or contract changes:
 1. Query the interface symbol:
 
 ```bash
-jq -r '.idx | keys[]' hermes.json | rg '(Store|Repository|Parser|Analyzer|Client)$'
+jq -r '.idx | keys[]' codeatlas.json | rg '(Store|Repository|Parser|Analyzer|Client)$'
 ```
 
 2. Open the interface.
@@ -204,7 +204,7 @@ jq -r '.idx | keys[]' hermes.json | rg '(Store|Repository|Parser|Analyzer|Client
 5. Find tests for the contract and implementations.
 6. Apply changes across the full implementation set.
 7. Run type checks and tests.
-8. Regenerate Hermes because contract topology changed.
+8. Regenerate CodeAtlas because contract topology changed.
 
 Do not change an interface after inspecting only one implementation.
 
@@ -221,12 +221,12 @@ Before editing:
 After editing:
 
 - Tests or type checks run where feasible.
-- Hermes regenerated if symbol topology changed.
+- CodeAtlas regenerated if symbol topology changed.
 - Final navigation uses the regenerated snapshot if further code reading is needed.
 
 ## Freshness Rules
 
-Regenerate Hermes after refactors that affect:
+Regenerate CodeAtlas after refactors that affect:
 
 - symbol names
 - symbol locations
@@ -255,8 +255,8 @@ If many unrelated references match, narrow with package prefixes, receiver names
 
 If file metadata is missing for a path from `.idx`, the index is inconsistent. Regenerate before refactoring.
 
-If tests fail after a rename, query the old and new names in Hermes and with `rg` to find missed definitions or references.
+If tests fail after a rename, query the old and new names in CodeAtlas and with `rg` to find missed definitions or references.
 
 ## Refactoring Principle
 
-Hermes helps you keep the refactor small. Use it to move from one exact symbol to the next exact symbol. Large context dumps are a sign that the refactor scope has not been defined precisely enough.
+CodeAtlas helps you keep the refactor small. Use it to move from one exact symbol to the next exact symbol. Large context dumps are a sign that the refactor scope has not been defined precisely enough.
